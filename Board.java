@@ -1,6 +1,8 @@
 import java.awt.Color;
 
 public class Board{
+    public static final Color EMPTY_COLOR = Color.GRAY;
+    
     private Square[][] board;
     private Piece currentPiece;
     private int[] currentPieceCoords;
@@ -52,7 +54,7 @@ public class Board{
     public boolean tryMove(int x, int y, int rotation) {
         if (!checkCollision(currentPieceCoords[0] + x, currentPieceCoords[1] + y, (currentPieceRotation + rotation) % 4)) {
             for (Square s : occupiedSquares(currentPieceCoords[0], currentPieceCoords[1], currentPieceRotation)) {
-                s.setColor(Color.GRAY);
+                s.setColor(EMPTY_COLOR);
             }
             currentPieceCoords[0] += x;
             currentPieceCoords[1] += y;
@@ -91,7 +93,7 @@ public class Board{
     public void clearLine(int j) {
         for (int i = 0; i < 10; i++) {
             this.board[i][j].setOccupied(false);
-            this.board[i][j].setColor(Color.GRAY);
+            this.board[i][j].setColor(EMPTY_COLOR);
         }
         for (int k = j; k > 0; k--) {
             for (int i = 0; i < 10; i++) {

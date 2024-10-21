@@ -6,7 +6,7 @@ public class Square {
     private boolean occupied;
 
     public Square() {
-        this.color = Color.GRAY;
+        this.color = Board.EMPTY_COLOR;
     }
 
     public Color getColor() {

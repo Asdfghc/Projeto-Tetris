@@ -1,18 +1,16 @@
-
 import java.awt.EventQueue;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
 import java.util.HashSet;
 import java.util.Iterator;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
 
 public class Tetris extends JPanel{
 
     public static void main(String[] args) {
 
         EventQueue.invokeLater(() -> {
-            //Board board = new Board();
             JFrame f = new JFrame("Tetris");
             f.setSize(800, 600);
             f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -21,9 +19,7 @@ public class Tetris extends JPanel{
             f.setVisible(true);
             
             var game = new UI();
-            //game.start();
             f.add(game);
-
 
             f.addKeyListener(new KeyListener() {
                 HashSet<Integer> pressedKeys = new HashSet<>();
