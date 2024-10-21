@@ -2,10 +2,10 @@ import java.awt.Color;
 
 public class Board{
     protected static final int BOARD_HEIGHT = 20;
-    protected static final int BOARD_WIDTH = 10;
+    protected static final int BOARD_WIDTH = 20;
     protected static final Color EMPTY_COLOR = Color.BLACK;
     
-    private Square[][] board;
+    private final Square[][] board;
     private Piece currentPiece;
     private int[] currentPieceCoords;
     private int currentPieceRotation;
@@ -65,22 +65,15 @@ public class Board{
         return false;
     }
 
-    private boolean collisionPosition() {   // vai verificar se tem colission na posição onde as novas peças são geradas
-        return checkCollision(4, 0, 0);
-    }
-    
-    public boolean eGameOver() {
-        return gameOver;
-    }
-
     public void newPiece() {
         if(gameOver == true){
             return;
         }
         currentPiece = new Piece(Piece.PieceType.values()[(int)(Math.random()*7)]);
         currentPieceCoords = new int[]{BOARD_WIDTH/2-2, 0};
+        currentPieceRotation = 0;
 
-        if(collisionPosition() == true){  // v se tem colição, se tiver, vai ser true e vai printar game over
+        if(checkCollision(currentPieceCoords[0], currentPieceCoords[1], currentPieceRotation)){  // v se tem colição, se tiver, vai ser true e vai printar game over
             gameOver = true;
             System.out.println("Game Over");
             return;

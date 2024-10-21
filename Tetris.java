@@ -30,21 +30,11 @@ public class Tetris extends JPanel{
                     if (!pressedKeys.isEmpty()) {
                         for (Iterator<Integer> it = pressedKeys.iterator(); it.hasNext();) {
                             switch (it.next()) {
-                                case KeyEvent.VK_UP:
-                                    game.rotatePieceRight();
-                                    break;
-                                case KeyEvent.VK_DOWN:
-                                    game.rotatePieceLeft();
-                                    break;
-                                case KeyEvent.VK_SPACE:
-                                    game.movePieceDown();
-                                    break;
-                                case KeyEvent.VK_LEFT:
-                                    game.movePieceLeft();
-                                    break;
-                                case KeyEvent.VK_RIGHT:
-                                    game.movePieceRight();
-                                    break;
+                                case KeyEvent.VK_UP -> game.rotatePieceRight();
+                                case KeyEvent.VK_DOWN -> game.rotatePieceLeft();
+                                case KeyEvent.VK_SPACE -> game.movePieceDown();
+                                case KeyEvent.VK_LEFT -> game.movePieceLeft();
+                                case KeyEvent.VK_RIGHT -> game.movePieceRight();
                             }
                         }
                     }
@@ -57,20 +47,17 @@ public class Tetris extends JPanel{
                 
                 @Override
                 public synchronized void keyTyped(KeyEvent e) {
-                    switch (e.getKeyChar()) {
-                        case 'q':
-                            System.exit(0);
-                            break;
-                        case 'r':
-                            game.restart();
-                            break;
+                    switch (Character.toLowerCase(e.getKeyChar())) {
+                        case 'q' -> System.exit(0);
+                        case 'r' -> game.restart();
+                        case 'e' -> game.pause();
                     }
                 }
             });
 
             new Thread() {
                 @Override public void run() {
-                    while (true) {
+                    while (game.isRunning()) {
                         try {
                             Thread.sleep(500);
                             game.movePieceDown();

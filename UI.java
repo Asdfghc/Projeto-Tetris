@@ -5,6 +5,7 @@ import javax.swing.JPanel;
 
 public class UI extends JPanel {
     private Board board;
+    private boolean paused = false;
 
     public UI() {
         board = new Board();
@@ -14,6 +15,14 @@ public class UI extends JPanel {
     public void restart() {
         board = new Board();
         board.newPiece();
+    }
+
+    public void pause() {
+        paused = !paused;
+    }
+
+    public boolean isRunning() {
+        return !paused;
     }
 
     public int getWindowHeight() {
@@ -60,10 +69,10 @@ public class UI extends JPanel {
 		g.fillRect(0, 0, getWindowWidth(), getWindowHeight());
 
         g.setColor(Color.CYAN);
-        g.fillRect(getWindowWidth()/2 + getSquareSize()*(-6) + getSquareSize()*3/4, getWindowHeight()/20 - getSquareSize()/4 , getSquareSize()*10 + getSquareSize()*2/4 , getSquareSize()* 20 + getSquareSize()/2 );
+        g.fillRect(getWindowWidth()/2 - (int) ((Board.BOARD_WIDTH/2+0.25)*getSquareSize()), getWindowHeight()/20 - (int) (0.25*getSquareSize()), (int) ((Board.BOARD_WIDTH+0.5)*getSquareSize()), (int) ((Board.BOARD_HEIGHT+0.5)*getSquareSize()));
 
         g.setColor(Color.BLACK);
-        g.fillRect(getWindowWidth()/2 + getSquareSize()*(-5), getWindowHeight()/20 - 1 , getSquareSize()*10, getSquareSize()* 20);
+        g.fillRect(getWindowWidth()/2 - Board.BOARD_WIDTH/2*getSquareSize(), getWindowHeight()/20 - 1, getSquareSize()*Board.BOARD_WIDTH, getSquareSize()* Board.BOARD_HEIGHT);
 
 		for (int i = 0; i < Board.BOARD_WIDTH; i++) {
 			for (int j = 0; j < Board.BOARD_HEIGHT; j++) {

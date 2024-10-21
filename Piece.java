@@ -12,55 +12,55 @@ public class Piece {
         this.type = type;
         this.shape = new int[4][4][2];
         switch (this.type) {
-            case I:
+            case I -> {
                 this.color = Color.CYAN;
                 this.shape[0] = new int[][]{{0, 2}, {1, 2}, {2, 2}, {3, 2}};
                 this.shape[1] = new int[][]{{2, 0}, {2, 1}, {2, 2}, {2, 3}};
                 this.shape[2] = new int[][]{{0, 2}, {1, 2}, {2, 2}, {3, 2}};
                 this.shape[3] = new int[][]{{2, 0}, {2, 1}, {2, 2}, {2, 3}};
-                break;
-            case J:
+            }
+            case J -> {
                 this.color = Color.BLUE;
                 this.shape[0] = new int[][]{{0, 1}, {1, 1}, {2, 1}, {2, 2}};
                 this.shape[1] = new int[][]{{1, 0}, {1, 1}, {1, 2}, {0, 2}};
-                this.shape[3] = new int[][]{{0, 1}, {1, 1}, {2, 1}, {0, 0}};
-                this.shape[2] = new int[][]{{1, 0}, {1, 1}, {1, 2}, {2, 0}};
-                break;
-            case L:
+                this.shape[2] = new int[][]{{0, 0}, {0, 1}, {1, 1}, {2, 1}};
+                this.shape[3] = new int[][]{{1, 0}, {1, 1}, {1, 2}, {2, 0}};
+            }
+            case L -> {
                 this.color = Color.ORANGE;
                 this.shape[0] = new int[][]{{0, 1}, {1, 1}, {2, 1}, {0, 2}};
                 this.shape[1] = new int[][]{{0, 0}, {1, 0}, {1, 1}, {1, 2}};
                 this.shape[2] = new int[][]{{0, 1}, {1, 1}, {2, 1}, {2, 0}};
                 this.shape[3] = new int[][]{{1, 0}, {1, 1}, {1, 2}, {2, 2}};
-                break;
-            case O:
+            }
+            case O -> {
                 this.color = Color.YELLOW;
                 this.shape[0] = new int[][]{{0, 0}, {0, 1}, {1, 0}, {1, 1}};
                 this.shape[1] = new int[][]{{0, 0}, {0, 1}, {1, 0}, {1, 1}};
                 this.shape[2] = new int[][]{{0, 0}, {0, 1}, {1, 0}, {1, 1}};
                 this.shape[3] = new int[][]{{0, 0}, {0, 1}, {1, 0}, {1, 1}};
-                break;
-            case S:
+            }
+            case S -> {
                 this.color = Color.GREEN;
                 this.shape[0] = new int[][]{{0, 2}, {1, 2}, {1, 1}, {2, 1}};
                 this.shape[1] = new int[][]{{1, 0}, {1, 1}, {2, 1}, {2, 2}};
                 this.shape[2] = new int[][]{{0, 2}, {1, 2}, {1, 1}, {2, 1}};
                 this.shape[3] = new int[][]{{1, 0}, {1, 1}, {2, 1}, {2, 2}};
-                break;
-            case Z:
+            }
+            case Z -> {
                 this.color = Color.RED;
                 this.shape[0] = new int[][]{{0, 1}, {1, 1}, {1, 2}, {2, 2}};
                 this.shape[1] = new int[][]{{2, 0}, {2, 1}, {1, 1}, {1, 2}};
                 this.shape[2] = new int[][]{{0, 1}, {1, 1}, {1, 2}, {2, 2}};
                 this.shape[3] = new int[][]{{2, 0}, {2, 1}, {1, 1}, {1, 2}};
-                break;
-            case T:
+            }
+            case T -> {
                 this.color = Color.MAGENTA;
                 this.shape[0] = new int[][]{{0, 1}, {1, 1}, {2, 1}, {1, 2}};
                 this.shape[1] = new int[][]{{1, 0}, {1, 1}, {1, 2}, {0, 1}};
                 this.shape[2] = new int[][]{{0, 1}, {1, 1}, {2, 1}, {1, 0}};
                 this.shape[3] = new int[][]{{1, 0}, {1, 1}, {1, 2}, {2, 1}};
-                break;
+            }
         }
     }
 
