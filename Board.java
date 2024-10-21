@@ -5,6 +5,7 @@ public class Board{
     private Piece currentPiece;
     private int[] currentPieceCoords;
     private int currentPieceRotation;
+    private boolean gameOver = false;
 
     public Board() {
         this.board = new Square[10][20];
@@ -17,6 +18,10 @@ public class Board{
 
     public Square getSquare(int i, int j) {
         return this.board[i][j];
+    }
+
+    public boolean eGameOver() {
+        return gameOver;
     }
 
     public Square[] occupiedSquares(int x, int y, int rotation) {
@@ -60,9 +65,22 @@ public class Board{
         return false;
     }
 
+    private boolean collisionPosition() {   // vai verificar se tem colission na posição onde as novas peças são geradas
+        return checkCollision(4, 0, 0);
+    }
+
     public void newPiece() {
+        if(gameOver == true){
+            return;
+        }
         currentPiece = new Piece(Piece.PieceType.values()[(int)(Math.random()*7)]); //TODO: bag
         currentPieceCoords = new int[]{4, 0};
+
+        if(collisionPosition() == true){  // v se tem colição, se tiver, vai ser true e vai printar game over
+            gameOver = true;
+            System.out.println("Game Over");
+            return;
+        }
         for (int i = 0; i < 4; i++) {
             int x = currentPiece.getShape(currentPieceRotation)[i][0];
             int y = currentPiece.getShape(currentPieceRotation)[i][1];
