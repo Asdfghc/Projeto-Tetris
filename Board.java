@@ -3,7 +3,7 @@ import java.awt.Color;
 public class Board{
     protected static final int BOARD_HEIGHT = 20;
     protected static final int BOARD_WIDTH = 10;
-    protected static final Color EMPTY_COLOR = Color.GRAY;
+    protected static final Color EMPTY_COLOR = Color.BLACK;
     
     private Square[][] board;
     private Piece currentPiece;
