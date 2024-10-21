@@ -1,7 +1,8 @@
 import java.awt.Color;
 
 public class Board{
-    public static final Color EMPTY_COLOR = Color.GRAY;
+    protected static final int BOARD_HEIGHT = 20;
+    protected static final Color EMPTY_COLOR = Color.GRAY;
     
     private Square[][] board;
     private Piece currentPiece;
@@ -75,7 +76,7 @@ public class Board{
         if(gameOver == true){
             return;
         }
-        currentPiece = new Piece(Piece.PieceType.values()[(int)(Math.random()*7)]); //TODO: bag
+        currentPiece = new Piece(Piece.PieceType.values()[(int)(Math.random()*7)]);
         currentPieceCoords = new int[]{4, 0};
 
         if(collisionPosition() == true){  // v se tem colição, se tiver, vai ser true e vai printar game over
@@ -129,13 +130,5 @@ public class Board{
             clearLines();
             newPiece();
         }
-    }
-
-    public void movePieceLeft() {
-        tryMove(-1, 0, 0);
-    }
-
-    public void movePieceRight() {
-        tryMove(1, 0, 0);
     }
 }

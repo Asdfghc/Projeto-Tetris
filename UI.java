@@ -4,8 +4,6 @@ import java.awt.Graphics;
 import javax.swing.JPanel;
 
 public class UI extends JPanel {
-    private final int BOARD_HEIGHT = 20;
-    //private final int BOARD_WIDTH = 10;
     private Board board;
 
     public UI() {
@@ -27,22 +25,10 @@ public class UI extends JPanel {
     }
 
     public int getSquareSize() {
-        return getWindowHeight()*9/10/BOARD_HEIGHT;
+        return getWindowHeight()*9/10/Board.BOARD_HEIGHT;
     }
 
-    /*public static final int screenHeightPixels() {
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        double height = screenSize.getHeight();
-        return (int) height; //40 da barra do windows
-    }
-
-    public static final int screenWidthPixels() {
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        double width = screenSize.getWidth();
-        return (int) width;
-    }*/
-
-    public void rotatePieceRight() {                     //TODO: deixar consistente
+    public void rotatePieceRight() {
         board.tryMove(0, 0, 1);
         repaint();
     }
@@ -58,12 +44,12 @@ public class UI extends JPanel {
     }
 
     public void movePieceLeft() {
-        board.movePieceLeft();
+        board.tryMove(-1, 0, 0);
         repaint();
     }
 
     public void movePieceRight() {
-        board.movePieceRight();
+        board.tryMove(1, 0, 0);
         repaint();
     }
 
