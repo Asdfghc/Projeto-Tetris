@@ -62,7 +62,7 @@ public class UI extends JPanel {
 		for (int i = 0; i < Board.BOARD_WIDTH; i++) {
 			for (int j = 0; j < Board.BOARD_HEIGHT; j++) {
 				g.setColor(this.board.getSquare(i, j).getColor());
-				g.fillRect(getWindowWidth()/2 + getSquareSize()*(i-5), getWindowHeight()/20 + getSquareSize()*j, getSquareSize()-1, getSquareSize()-1);
+				g.fillRect(getWindowWidth()/2 + getSquareSize()*(i-Board.BOARD_WIDTH/2), getWindowHeight()/20 + getSquareSize()*j, getSquareSize()-1, getSquareSize()-1);
 			}
 		}
 	}

@@ -78,7 +78,7 @@ public class Board{
             return;
         }
         currentPiece = new Piece(Piece.PieceType.values()[(int)(Math.random()*7)]);
-        currentPieceCoords = new int[]{4, 0};
+        currentPieceCoords = new int[]{BOARD_WIDTH/2-2, 0};
 
         if(collisionPosition() == true){  // v se tem colição, se tiver, vai ser true e vai printar game over
             gameOver = true;
