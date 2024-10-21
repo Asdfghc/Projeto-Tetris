@@ -2,6 +2,7 @@ import java.awt.Color;
 
 public class Board{
     protected static final int BOARD_HEIGHT = 20;
+    protected static final int BOARD_WIDTH = 10;
     protected static final Color EMPTY_COLOR = Color.GRAY;
     
     private Square[][] board;
@@ -11,9 +12,9 @@ public class Board{
     private boolean gameOver = false;
 
     public Board() {
-        this.board = new Square[10][20];
-        for (int i = 0; i < 10; i++) {
-            for (int j = 0; j < 20; j++) {
+        this.board = new Square[BOARD_WIDTH][BOARD_HEIGHT];
+        for (int i = 0; i < BOARD_WIDTH; i++) {
+            for (int j = 0; j < BOARD_HEIGHT; j++) {
                 this.board[i][j] = new Square();
             }
         }
@@ -23,16 +24,12 @@ public class Board{
         return this.board[i][j];
     }
 
-    public boolean eGameOver() {
-        return gameOver;
-    }
-
     public Square[] occupiedSquares(int x, int y, int rotation) {
         Square[] squares = new Square[4];
         for (int i = 0; i < 4; i++) {
             int x1 = currentPiece.getShape(rotation)[i][0];
             int y1 = currentPiece.getShape(rotation)[i][1];
-            if (x + x1 < 0 || x + x1 >= 10 || y + y1 < 0 || y + y1 >= 20) {
+            if (x + x1 < 0 || x + x1 >= BOARD_WIDTH || y + y1 < 0 || y + y1 >= BOARD_HEIGHT) {
                 return null;
             }
             squares[i] = this.board[x + x1][y + y1];
@@ -71,6 +68,10 @@ public class Board{
     private boolean collisionPosition() {   // vai verificar se tem colission na posição onde as novas peças são geradas
         return checkCollision(4, 0, 0);
     }
+    
+    public boolean eGameOver() {
+        return gameOver;
+    }
 
     public void newPiece() {
         if(gameOver == true){
@@ -92,12 +93,12 @@ public class Board{
     }
 
     public void clearLine(int j) {
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < BOARD_WIDTH; i++) {
             this.board[i][j].setOccupied(false);
             this.board[i][j].setColor(EMPTY_COLOR);
         }
         for (int k = j; k > 0; k--) {
-            for (int i = 0; i < 10; i++) {
+            for (int i = 0; i < BOARD_WIDTH; i++) {
                 this.board[i][k].setOccupied(this.board[i][k-1].isOccupied());
                 this.board[i][k].setColor(this.board[i][k-1].getColor());
             }
@@ -106,9 +107,9 @@ public class Board{
     }
 
     public void clearLines() {
-        for (int j = 0; j < 20; j++) {
+        for (int j = 0; j < BOARD_HEIGHT; j++) {
             boolean full = true;
-            for (int i = 0; i < 10; i++) {
+            for (int i = 0; i < BOARD_WIDTH; i++) {
                 if (!this.board[i][j].isOccupied()) {
                     full = false;
                     break;
