@@ -65,6 +65,7 @@ public class UI extends JPanel {
     @Override 
 	public void paintComponent(Graphics g) {
         
+        //Board UI
         g.setColor(Color.BLACK);
 		g.fillRect(0, 0, getWindowWidth(), getWindowHeight());
 
@@ -73,6 +74,27 @@ public class UI extends JPanel {
 
         g.setColor(Color.BLACK);
         g.fillRect(getWindowWidth()/2 - Board.BOARD_WIDTH/2*getSquareSize(), getWindowHeight()/20 - 1, getSquareSize()*Board.BOARD_WIDTH, getSquareSize()* Board.BOARD_HEIGHT);
+
+        // Score UI
+        g.setColor(Color.CYAN);
+        g.fillRect(getWindowWidth()/2  + (int) ((Board.BOARD_WIDTH/2 + 1)*getSquareSize()), getWindowHeight()/17 - (int) (0.25*getSquareSize()), (int) ((Board.BOARD_WIDTH -  2.75)*getSquareSize()), (int) ((Board.BOARD_HEIGHT - 17)*getSquareSize()));
+
+        g.setColor(Color.black);
+        g.fillRect(getWindowWidth()/2  + (int) ((Board.BOARD_WIDTH/2 + 1.25)*getSquareSize()), getWindowHeight()/14 - (int) (0.25*getSquareSize()), (int) ((Board.BOARD_WIDTH -  3.25)*getSquareSize()), (int) ((Board.BOARD_HEIGHT - 17.5)*getSquareSize()));
+
+        // Next Pice UI
+        g.setColor(Color.CYAN);
+        g.fillRect(getWindowWidth()/2  + (int) ((Board.BOARD_WIDTH/2 + 1)*getSquareSize()), getWindowHeight()/4 - (int) (0.25*getSquareSize()), (int) ((Board.BOARD_WIDTH -  4)*getSquareSize()), (int) ((Board.BOARD_HEIGHT - 14.75)*getSquareSize()));
+
+        g.setColor(Color.black);
+        g.fillRect(getWindowWidth()/2  + (int) ((Board.BOARD_WIDTH/2 + 1.25)*getSquareSize()), getWindowHeight()/4 - (int) (0.25*getSquareSize()) + (int) (0.25*getSquareSize()), (int) ((Board.BOARD_WIDTH -  4.5)*getSquareSize()), (int) ((Board.BOARD_HEIGHT - 15.25)*getSquareSize()));
+
+        // Level UI
+        g.setColor(Color.CYAN);
+        g.fillRect(getWindowWidth()/2  + (int) ((Board.BOARD_WIDTH/2 + 1)*getSquareSize()), getWindowHeight()/2 -  (int) (0.25*getSquareSize()) + 3* (((int) (0.25*getSquareSize()))), (int) ((Board.BOARD_WIDTH -  2.75)*getSquareSize()), (int) ((Board.BOARD_HEIGHT - 17)*getSquareSize()));
+        
+        g.setColor(Color.black);
+        g.fillRect(getWindowWidth()/2  + (int) ((Board.BOARD_WIDTH/2 + 1.25)*getSquareSize()), getWindowHeight()/2 - (int) (0.25*getSquareSize()) + 4* (((int) (0.25*getSquareSize()))), (int) ((Board.BOARD_WIDTH -  3.25)*getSquareSize()), (int) ((Board.BOARD_HEIGHT - 17.5)*getSquareSize()));
 
 		for (int i = 0; i < Board.BOARD_WIDTH; i++) {
 			for (int j = 0; j < Board.BOARD_HEIGHT; j++) {

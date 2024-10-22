@@ -2,7 +2,7 @@ import java.awt.Color;
 
 public class Board{
     protected static final int BOARD_HEIGHT = 20;
-    protected static final int BOARD_WIDTH = 20;
+    protected static final int BOARD_WIDTH = 10;
     protected static final Color EMPTY_COLOR = Color.BLACK;
     
     private final Square[][] board;
@@ -10,6 +10,8 @@ public class Board{
     private int[] currentPieceCoords;
     private int currentPieceRotation;
     private boolean gameOver = false;
+
+    int Linhas_Feitas = 0;
 
     public Board() {
         this.board = new Square[BOARD_WIDTH][BOARD_HEIGHT];
@@ -89,6 +91,7 @@ public class Board{
         for (int i = 0; i < BOARD_WIDTH; i++) {
             this.board[i][j].setOccupied(false);
             this.board[i][j].setColor(EMPTY_COLOR);
+            Linhas_Feitas ++;
         }
         for (int k = j; k > 0; k--) {
             for (int i = 0; i < BOARD_WIDTH; i++) {
