@@ -5,7 +5,7 @@ public class Piece {
         I, J, L, O, S, T, Z
     }
     private PieceType type;
-    private int[][][] shape; //[rotation][row][column][x, y]
+    private int[][][] shape; //[rotation][squares][x, y]
     private Color color;
 
     public Piece(PieceType type) {
@@ -35,10 +35,10 @@ public class Piece {
             }
             case O -> {
                 this.color = Color.YELLOW;
-                this.shape[0] = new int[][]{{0, 0}, {0, 1}, {1, 0}, {1, 1}};
-                this.shape[1] = new int[][]{{0, 0}, {0, 1}, {1, 0}, {1, 1}};
-                this.shape[2] = new int[][]{{0, 0}, {0, 1}, {1, 0}, {1, 1}};
-                this.shape[3] = new int[][]{{0, 0}, {0, 1}, {1, 0}, {1, 1}};
+                this.shape[0] = new int[][]{{1, 1}, {1, 2}, {2, 1}, {2, 2}};
+                this.shape[1] = new int[][]{{1, 1}, {1, 2}, {2, 1}, {2, 2}};
+                this.shape[2] = new int[][]{{1, 1}, {1, 2}, {2, 1}, {2, 2}};
+                this.shape[3] = new int[][]{{1, 1}, {1, 2}, {2, 1}, {2, 2}};
             }
             case S -> {
                 this.color = Color.GREEN;
@@ -71,5 +71,4 @@ public class Piece {
     public Color getColor() {
         return this.color;
     }
-
 }
