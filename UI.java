@@ -6,10 +6,13 @@ import javax.swing.JPanel;
 public class UI extends JPanel {
     private Board board;
     private boolean paused = false;
+    //private static AudioPlayer musicPlayer = new AudioPlayer();
+    //private static AudioPlayer soundPlayer = new AudioPlayer();
 
     public UI() {
         board = new Board();
         board.newPiece();
+        //musicPlayer.playMusic("C:\\Users\\Admin\\OneDrive - Sociedade Campineira de Educação e Instrução\\Programas\\4º Semestre\\Desenvolvimento de Sistemas Orientado a Objeto\\Java-Tetris-Game-master\\Projeto-Tetris\\src\\TetrisMusic.wav");
     }
 
     public void restart() {
@@ -62,6 +65,7 @@ public class UI extends JPanel {
         repaint();
     }
 
+    
     @Override 
 	public void paintComponent(Graphics g) {
         

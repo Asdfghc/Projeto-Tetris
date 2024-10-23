@@ -11,6 +11,10 @@ public class Board{
     private int currentPieceRotation;
     private boolean gameOver = false;
 
+    private static AudioPlayer musicPlayer = new AudioPlayer();
+    private static AudioPlayer soundPlayer = new AudioPlayer();
+
+
     int Linhas_Feitas = 0;
 
     public Board() {
@@ -20,6 +24,8 @@ public class Board{
                 this.board[i][j] = new Square();
             }
         }
+        String TetrisMusic = getClass().getClassLoader().getResource("src/TetrisMusic.wav").getPath();
+        musicPlayer.playMusic(TetrisMusic);
     }
 
     public Square getSquare(int i, int j) {
@@ -78,6 +84,11 @@ public class Board{
         if(checkCollision(currentPieceCoords[0], currentPieceCoords[1], currentPieceRotation)){  // v se tem colição, se tiver, vai ser true e vai printar game over
             gameOver = true;
             System.out.println("Game Over");
+
+            musicPlayer.stopMusic();
+            String gameOverSound = getClass().getClassLoader().getResource("src/GameOverSound.wav").getPath();
+            soundPlayer.playSound(gameOverSound);
+
             return;
         }
         for (int i = 0; i < 4; i++) {
@@ -92,6 +103,9 @@ public class Board{
             this.board[i][j].setOccupied(false);
             this.board[i][j].setColor(EMPTY_COLOR);
             Linhas_Feitas ++;
+
+            String ClearLineSound = getClass().getClassLoader().getResource("src/ClearLineSound.wav").getPath();
+            soundPlayer.playSound(ClearLineSound);
         }
         for (int k = j; k > 0; k--) {
             for (int i = 0; i < BOARD_WIDTH; i++) {

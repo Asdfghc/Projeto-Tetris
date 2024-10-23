@@ -7,7 +7,6 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 public class Tetris extends JPanel{
-
     public static void main(String[] args) {
 
         EventQueue.invokeLater(() -> {
@@ -55,6 +54,7 @@ public class Tetris extends JPanel{
                 }
             });
 
+
             new Thread() {
                 @Override public void run() {
                     while (game.isRunning()) {
@@ -64,7 +64,7 @@ public class Tetris extends JPanel{
                         } catch (InterruptedException e) {}
                     }
                 }
-            }.start();
+            }.start();   
         });
     }
 }
