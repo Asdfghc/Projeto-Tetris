@@ -5,7 +5,7 @@ public class Piece {
         I, J, L, O, S, T, Z
     }
     private PieceType type;
-    private int[][][] shape; //[rotation][row][column][x, y]
+    private int[][][] shape; //[rotation][squares][x, y]
     private Color color;
 
     public Piece(PieceType type) {
@@ -71,5 +71,4 @@ public class Piece {
     public Color getColor() {
         return this.color;
     }
-
 }

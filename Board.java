@@ -7,6 +7,7 @@ public class Board{
     
     private final Square[][] board;
     private Piece currentPiece;
+    private Piece nextPiece;
     private int[] currentPieceCoords;
     private int currentPieceRotation;
     private boolean gameOver = false;
@@ -20,6 +21,7 @@ public class Board{
                 this.board[i][j] = new Square();
             }
         }
+        nextPiece = new Piece(Piece.PieceType.values()[(int)(Math.random()*7)]);
     }
 
     public Square getSquare(int i, int j) {
@@ -71,7 +73,8 @@ public class Board{
         if(gameOver == true){
             return;
         }
-        currentPiece = new Piece(Piece.PieceType.values()[(int)(Math.random()*7)]);
+        currentPiece =  nextPiece;
+        nextPiece = new Piece(Piece.PieceType.values()[(int)(Math.random()*7)]);
         currentPieceCoords = new int[]{BOARD_WIDTH/2-2, 0};
         currentPieceRotation = 0;
 
@@ -127,5 +130,10 @@ public class Board{
             clearLines();
             newPiece();
         }
+    }
+
+    public Piece getNextPiece()
+    {
+        return this.nextPiece;
     }
 }
