@@ -5,7 +5,6 @@ import javax.swing.JPanel;
 
 public class UI extends JPanel {
     private Board board;
-    private boolean paused = false;
 
     public UI() {
         board = new Board();
@@ -15,14 +14,6 @@ public class UI extends JPanel {
     public void restart() {
         board = new Board();
         board.newPiece();
-    }
-
-    public void pause() {
-        paused = !paused;
-    }
-
-    public boolean isRunning() {
-        return !paused;
     }
 
     public int getWindowHeight() {
