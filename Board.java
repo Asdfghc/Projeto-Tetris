@@ -16,7 +16,7 @@ public class Board{
     private static AudioPlayer soundPlayer = new AudioPlayer();
 
 
-    int Linhas_Feitas = 0;
+    private int TotalLinesCleared = 0;
 
     public Board() {
         this.board = new Square[BOARD_WIDTH][BOARD_HEIGHT];
@@ -25,8 +25,7 @@ public class Board{
                 this.board[i][j] = new Square();
             }
         }
-        String TetrisMusic = getClass().getClassLoader().getResource("src/TetrisMusic.wav").getPath();
-        musicPlayer.playMusic(TetrisMusic);
+        musicPlayer.playMusic("src\\TetrisMusic.wav");
         nextPiece = new Piece(Piece.PieceType.values()[(int)(Math.random()*7)]);
     }
 
@@ -89,8 +88,7 @@ public class Board{
             System.out.println("Game Over");
 
             musicPlayer.stopMusic();
-            String gameOverSound = getClass().getClassLoader().getResource("src/GameOverSound.wav").getPath();
-            soundPlayer.playSound(gameOverSound);
+            soundPlayer.playSound("src\\GameOverSound.wav");
 
             return;
         }
@@ -100,15 +98,11 @@ public class Board{
             this.board[currentPieceCoords[0] + x][currentPieceCoords[1] + y].setColor(currentPiece.getColor());
         }
     }
-
+    
     public void clearLine(int j) {
         for (int i = 0; i < BOARD_WIDTH; i++) {
             this.board[i][j].setOccupied(false);
             this.board[i][j].setColor(EMPTY_COLOR);
-            Linhas_Feitas ++;
-
-            String ClearLineSound = getClass().getClassLoader().getResource("src/ClearLineSound.wav").getPath();
-            soundPlayer.playSound(ClearLineSound);
         }
         for (int k = j; k > 0; k--) {
             for (int i = 0; i < BOARD_WIDTH; i++) {
@@ -118,8 +112,9 @@ public class Board{
         }
         
     }
-
+    
     public void clearLines() {
+        int LinesCleared = 0;
         for (int j = 0; j < BOARD_HEIGHT; j++) {
             boolean full = true;
             for (int i = 0; i < BOARD_WIDTH; i++) {
@@ -130,7 +125,19 @@ public class Board{
             }
             if (full) {
                 clearLine(j);
+                LinesCleared++;
+                TotalLinesCleared++;
             }
+        }
+        if(LinesCleared == 4) {
+            soundPlayer.playSound("src\\ClearLineSound.wav");
+        }
+        if(LinesCleared < 4 && LinesCleared >= 1 ) {
+            //soudPlayer.playSound("src\\ClearOneLineSound.wav");
+        }
+        if(LinesCleared == 0) {
+            //soudPlayer.playSound("src\\FallingPieceSound.wav");
+
         }
     }
 

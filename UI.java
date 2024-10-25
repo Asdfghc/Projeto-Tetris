@@ -9,7 +9,6 @@ public class UI extends JPanel {
     public UI() {
         board = new Board();
         board.newPiece();
-        //musicPlayer.playMusic("C:\\Users\\Admin\\OneDrive - Sociedade Campineira de Educação e Instrução\\Programas\\4º Semestre\\Desenvolvimento de Sistemas Orientado a Objeto\\Java-Tetris-Game-master\\Projeto-Tetris\\src\\TetrisMusic.wav");
     }
 
     public void restart() {
