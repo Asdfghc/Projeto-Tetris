@@ -133,11 +133,10 @@ public class Board{
             soundPlayer.playSound("src\\ClearLineSound.wav");
         }
         if(LinesCleared < 4 && LinesCleared >= 1 ) {
-            //soudPlayer.playSound("src\\ClearOneLineSound.wav");
+            soundPlayer.playSound("src\\ClearOneLineSound.wav");
         }
         if(LinesCleared == 0) {
-            //soudPlayer.playSound("src\\FallingPieceSound.wav");
-
+            soundPlayer.playSound("src\\FallingPieceSound.wav");
         }
     }
 
