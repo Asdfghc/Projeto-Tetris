@@ -77,6 +77,7 @@ public class UI extends JPanel {
         }
     }
 
+    
     @Override 
 	public void paintComponent(Graphics g) {
         

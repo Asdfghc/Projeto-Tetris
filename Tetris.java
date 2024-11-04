@@ -55,6 +55,7 @@ public class Tetris extends JPanel{
                 }
             });
 
+
             new Thread() {
                 @Override public void run() {
                     while (true) {
@@ -64,7 +65,7 @@ public class Tetris extends JPanel{
                         } catch (InterruptedException e) {}
                     }
                 }
-            }.start();
+            }.start();   
         });
     }
 }

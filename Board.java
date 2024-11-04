@@ -12,7 +12,11 @@ public class Board{
     private int currentPieceRotation;
     private boolean gameOver = false;
 
-    int Linhas_Feitas = 0;
+    private static AudioPlayer musicPlayer = new AudioPlayer();
+    private static AudioPlayer soundPlayer = new AudioPlayer();
+
+
+    private int TotalLinesCleared = 0;
 
     public Board() {
         this.board = new Square[BOARD_WIDTH][BOARD_HEIGHT];
@@ -21,6 +25,7 @@ public class Board{
                 this.board[i][j] = new Square();
             }
         }
+        musicPlayer.playMusic("src\\TetrisMusic.wav");
         nextPiece = new Piece(Piece.PieceType.values()[(int)(Math.random()*7)]);
     }
 
@@ -81,6 +86,10 @@ public class Board{
         if(checkCollision(currentPieceCoords[0], currentPieceCoords[1], currentPieceRotation)){  // v se tem colição, se tiver, vai ser true e vai printar game over
             gameOver = true;
             System.out.println("Game Over");
+
+            musicPlayer.stopMusic();
+            soundPlayer.playSound("src\\GameOverSound.wav");
+
             return;
         }
         for (int i = 0; i < 4; i++) {
@@ -89,12 +98,11 @@ public class Board{
             this.board[currentPieceCoords[0] + x][currentPieceCoords[1] + y].setColor(currentPiece.getColor());
         }
     }
-
+    
     public void clearLine(int j) {
         for (int i = 0; i < BOARD_WIDTH; i++) {
             this.board[i][j].setOccupied(false);
             this.board[i][j].setColor(EMPTY_COLOR);
-            Linhas_Feitas ++;
         }
         for (int k = j; k > 0; k--) {
             for (int i = 0; i < BOARD_WIDTH; i++) {
@@ -104,8 +112,9 @@ public class Board{
         }
         
     }
-
+    
     public void clearLines() {
+        int LinesCleared = 0;
         for (int j = 0; j < BOARD_HEIGHT; j++) {
             boolean full = true;
             for (int i = 0; i < BOARD_WIDTH; i++) {
@@ -116,7 +125,18 @@ public class Board{
             }
             if (full) {
                 clearLine(j);
+                LinesCleared++;
+                TotalLinesCleared++;
             }
+        }
+        if(LinesCleared == 4) {
+            soundPlayer.playSound("src\\ClearLineSound.wav");
+        }
+        if(LinesCleared < 4 && LinesCleared >= 1 ) {
+            soundPlayer.playSound("src\\ClearOneLineSound.wav");
+        }
+        if(LinesCleared == 0) {
+            soundPlayer.playSound("src\\FallingPieceSound.wav");
         }
     }
 
