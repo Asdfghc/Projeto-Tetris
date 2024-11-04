@@ -1,8 +1,8 @@
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
-import javax.sound.sampled.AudioInputStream;
 import java.io.File;
 import java.io.IOException;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
@@ -38,8 +38,20 @@ public class AudioPlayer {
     public void stopMusic() {
         if (sound != null && sound.isRunning()) {
             sound.stop();
-        //    sound.flush();
+            sound.flush();
             sound.close();
+        }
+    }
+
+    public void pause() {
+        if (sound != null && sound.isRunning()) {
+            sound.stop();
+        }
+    }
+
+    public void resume() {
+        if (sound != null && !sound.isRunning()) {
+            sound.start();
         }
     }
 }

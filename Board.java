@@ -1,5 +1,6 @@
 import java.awt.Color;
 
+
 public class Board{
     protected static final int BOARD_HEIGHT = 20;
     protected static final int BOARD_WIDTH = 10;
@@ -12,10 +13,6 @@ public class Board{
     private int currentPieceRotation;
     private boolean gameOver = false;
 
-    private static AudioPlayer musicPlayer = new AudioPlayer();
-    private static AudioPlayer soundPlayer = new AudioPlayer();
-
-
     private int TotalLinesCleared = 0;
 
     public Board() {
@@ -25,7 +22,9 @@ public class Board{
                 this.board[i][j] = new Square();
             }
         }
-        musicPlayer.playMusic("src\\TetrisMusic.wav");
+        UI.forceUnpause();
+        UI.stopMusic();
+        UI.playMusic("src\\TetrisMusic.wav");
         nextPiece = new Piece(Piece.PieceType.values()[(int)(Math.random()*7)]);
     }
 
@@ -86,9 +85,9 @@ public class Board{
         if(checkCollision(currentPieceCoords[0], currentPieceCoords[1], currentPieceRotation)){  // v se tem colição, se tiver, vai ser true e vai printar game over
             gameOver = true;
             System.out.println("Game Over");
-
-            musicPlayer.stopMusic();
-            soundPlayer.playSound("src\\GameOverSound.wav");
+            UI.forcePause();
+            UI.stopMusic();
+            UI.playSound("src\\GameOverSound.wav");
 
             return;
         }
@@ -130,13 +129,13 @@ public class Board{
             }
         }
         if(LinesCleared == 4) {
-            soundPlayer.playSound("src\\ClearLineSound.wav");
+            UI.playSound("src\\ClearLineSound.wav");
         }
         if(LinesCleared < 4 && LinesCleared >= 1 ) {
-            soundPlayer.playSound("src\\ClearOneLineSound.wav");
+            UI.playSound("src\\ClearOneLineSound.wav");
         }
         if(LinesCleared == 0) {
-            soundPlayer.playSound("src\\FallingPieceSound.wav");
+            UI.playSound("src\\FallingPieceSound.wav");
         }
     }
 

@@ -5,12 +5,36 @@ import javax.swing.JPanel;
 
 public class UI extends JPanel {
     private boolean paused = false;
-    private boolean forcePaused = false;
+    private static boolean forcePaused = false;
     private Board board;
+    private static AudioPlayer musicPlayer = new AudioPlayer();
+    private static AudioPlayer soundPlayer = new AudioPlayer();
 
     public UI() {
         board = new Board();
         board.newPiece();
+    }
+
+    public static void playMusic(String path) {
+        musicPlayer.playMusic(path);
+    }
+
+    public static void stopMusic() {
+        musicPlayer.stopMusic();
+    }
+
+    /*
+    public static void pauseMusic() {
+        musicPlayer.pause();
+    }
+
+    public static void resumeMusic() {
+        musicPlayer.resume();
+    }
+    */
+
+    public static void playSound(String path) {
+        soundPlayer.playSound(path);
     }
 
     public void restart() {
@@ -20,13 +44,18 @@ public class UI extends JPanel {
 
     public void pause() {
         paused = !paused;
+        if (paused) {
+            musicPlayer.pause();
+        } else {
+            musicPlayer.resume();
+        }
     }
 
-    public void forcePause() {
+    public static void forcePause() {
         forcePaused = true;
     }
 
-    public void forceUnpause() {
+    public static void forceUnpause() {
         forcePaused = false;
     }
 
