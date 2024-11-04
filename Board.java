@@ -14,6 +14,8 @@ public class Board{
     private boolean gameOver = false;
 
     private int TotalLinesCleared = 0;
+    private int TotalLevel = 0;
+    private int TotalScore = 0;
 
     public Board() {
         this.board = new Square[BOARD_WIDTH][BOARD_HEIGHT];
@@ -126,6 +128,12 @@ public class Board{
                 clearLine(j);
                 LinesCleared++;
                 TotalLinesCleared++;
+                if(TotalLinesCleared == 10)
+                {
+                    TotalLinesCleared = 0;
+                    TotalLevel++;
+                }
+                TotalScore += 40*(TotalLevel + 1);
             }
         }
         if(LinesCleared == 4) {
@@ -149,6 +157,21 @@ public class Board{
             clearLines();
             newPiece();
         }
+    }
+
+    public int getLines()
+    {
+        return this.TotalLinesCleared;
+    }
+
+    public int getScore()
+    {
+        return this.TotalScore;
+    }
+
+    public int getLevel()
+    {
+        return this.TotalLevel;
     }
 
     public Piece getNextPiece()

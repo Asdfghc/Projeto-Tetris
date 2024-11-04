@@ -1,6 +1,8 @@
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
+
 import javax.swing.JPanel;
 
 public class UI extends JPanel {
@@ -109,7 +111,9 @@ public class UI extends JPanel {
     
     @Override 
 	public void paintComponent(Graphics g) {
-        
+
+        super.paintComponent(g);
+
         //Board UI
             // all Panel Color
             g.setColor(Color.BLACK);
@@ -130,6 +134,11 @@ public class UI extends JPanel {
 
             g.setColor(Color.black);
             g.fillRect(getWindowWidth()/2  + (int) ((Board.BOARD_WIDTH/2 + 1.25)*getSquareSize()), getWindowHeight()/14 - (int) (0.25*getSquareSize()), (int) ((Board.BOARD_WIDTH -  3.25)*getSquareSize()), (int) ((Board.BOARD_HEIGHT - 17.5)*getSquareSize()));
+
+            // Text UI
+            g.setColor(Color.WHITE);
+            g.setFont(new Font("Clarendo", Font.BOLD, 20));
+            g.drawString("Score: " + board.getScore(), getWindowWidth()/2  + (int) ((Board.BOARD_WIDTH/2 + 2)*getSquareSize()), (int) ((Board.BOARD_HEIGHT - 17.10)*getSquareSize()));
 
         // Next Pice UI
             //Box UI
@@ -153,6 +162,26 @@ public class UI extends JPanel {
             g.setColor(Color.black);
             g.fillRect(getWindowWidth()/2  + (int) ((Board.BOARD_WIDTH/2 + 1.25)*getSquareSize()), getWindowHeight()/2 - (int) (0.25*getSquareSize()) + 4* (((int) (0.25*getSquareSize()))), (int) ((Board.BOARD_WIDTH -  3.25)*getSquareSize()), (int) ((Board.BOARD_HEIGHT - 17.5)*getSquareSize()));
 
+            // Text UI
+            g.setColor(Color.WHITE);
+            g.setFont(new Font("Clarendo", Font.BOLD, 20));
+            g.drawString("Level: " + board.getLevel(), getWindowWidth()/2  + (int) ((Board.BOARD_WIDTH/2 + 2)*getSquareSize()), (int) ((Board.BOARD_HEIGHT - 6.6)*getSquareSize()));
+        
+        //Lines UI maybe
+            //Box UI
+            //TODO: fazer as caixas
+            //g.setColor(Color.CYAN);
+            //g.fillRect(getWindowWidth()/2  + (int) ((Board.BOARD_WIDTH/2 + 1)*getSquareSize()), getWindowHeight()/2 -  (int) (0.25*getSquareSize()) + 3* (((int) (0.25*getSquareSize()))), (int) ((Board.BOARD_WIDTH -  2.75)*getSquareSize()), (int) ((Board.BOARD_HEIGHT - 17)*getSquareSize()));
+            
+            //g.setColor(Color.black);
+            //g.fillRect(getWindowWidth()/2  + (int) ((Board.BOARD_WIDTH/2 + 1.25)*getSquareSize()), getWindowHeight()/2 - (int) (0.25*getSquareSize()) + 4* (((int) (0.25*getSquareSize()))), (int) ((Board.BOARD_WIDTH -  3.25)*getSquareSize()), (int) ((Board.BOARD_HEIGHT - 17.5)*getSquareSize()));
+
+
+            //Text UI
+            //g.setColor(Color.WHITE);
+            //g.setFont(new Font("Clarendo", Font.BOLD, 20));
+            //g.drawString("Lines: " + board.getLines(), (int) ((Board.BOARD_WIDTH -  4)*getSquareSize()), (int) ((Board.BOARD_HEIGHT - 17.10)*getSquareSize()));
+            
 		for (int i = 0; i < Board.BOARD_WIDTH; i++) {
 			for (int j = 0; j < Board.BOARD_HEIGHT; j++) {
 				g.setColor(this.board.getSquare(i, j).getColor());
