@@ -4,6 +4,8 @@ import java.awt.Graphics;
 import javax.swing.JPanel;
 
 public class UI extends JPanel {
+    private boolean paused = false;
+    private boolean forcePaused = false;
     private Board board;
 
     public UI() {
@@ -14,6 +16,18 @@ public class UI extends JPanel {
     public void restart() {
         board = new Board();
         board.newPiece();
+    }
+
+    public void pause() {
+        paused = !paused;
+    }
+
+    public void forcePause() {
+        forcePaused = true;
+    }
+
+    public void forceUnpause() {
+        forcePaused = false;
     }
 
     public int getWindowHeight() {
@@ -29,28 +43,38 @@ public class UI extends JPanel {
     }
 
     public void rotatePieceRight() {
-        board.tryMove(0, 0, 1);
-        repaint();
+        if (!paused && !forcePaused) {
+            board.tryMove(0, 0, 1);
+            repaint();
+        }
     }
 
     public void rotatePieceLeft() {
-        board.tryMove(0, 0, 3);
-        repaint();
+        if (!paused && !forcePaused) {
+            board.tryMove(0, 0, 3);
+            repaint();
+        }
     }
 
     public void movePieceDown() {
-        board.movePieceDown();
-        repaint();
+        if (!paused && !forcePaused) {
+            board.movePieceDown();
+            repaint();
+        }
     }
 
     public void movePieceLeft() {
-        board.tryMove(-1, 0, 0);
-        repaint();
+        if (!paused && !forcePaused) {
+            board.tryMove(-1, 0, 0);
+            repaint();
+        }
     }
 
     public void movePieceRight() {
-        board.tryMove(1, 0, 0);
-        repaint();
+        if (!paused && !forcePaused) {
+            board.tryMove(1, 0, 0);
+            repaint();
+        }
     }
 
     @Override 

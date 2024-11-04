@@ -7,7 +7,6 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 public class Tetris extends JPanel{
-    private static boolean isRunning = true;
 
     public static void main(String[] args) {
 
@@ -51,14 +50,14 @@ public class Tetris extends JPanel{
                     switch (Character.toLowerCase(e.getKeyChar())) {
                         case 'q' -> System.exit(0);
                         case 'r' -> game.restart();
-                        case 'e' -> isRunning = !isRunning;
+                        case 'e' -> game.pause();
                     }
                 }
             });
 
             new Thread() {
                 @Override public void run() {
-                    while (isRunning) {
+                    while (true) {
                         try {
                             Thread.sleep(500);
                             game.movePieceDown();
