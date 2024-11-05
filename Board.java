@@ -99,9 +99,12 @@ public class Board{
     }
     
     public void clearLine(int j) {
+        UI.forcePause();
         for (int i = 0; i < BOARD_WIDTH; i++) {
             this.board[i][j].setOccupied(false);
             this.board[i][j].setColor(EMPTY_COLOR);
+            UI.repaintUI();
+            Thread.sleep(50);
         }
         for (int k = j; k > 0; k--) {
             for (int i = 0; i < BOARD_WIDTH; i++) {
@@ -109,7 +112,7 @@ public class Board{
                 this.board[i][k].setColor(this.board[i][k-1].getColor());
             }
         }
-        
+        UI.forceUnpause();
     }
     
     public void clearLines() {

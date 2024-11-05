@@ -8,6 +8,7 @@ import javax.swing.JPanel;
 
 public class Tetris extends JPanel{
 
+    public static UI game = new UI();
     public static void main(String[] args) {
 
         EventQueue.invokeLater(() -> {
@@ -18,7 +19,6 @@ public class Tetris extends JPanel{
             //f.setUndecorated(true);
             f.setVisible(true);
             
-            var game = new UI();
             f.add(game);
 
             f.addKeyListener(new KeyListener() {
@@ -59,10 +59,14 @@ public class Tetris extends JPanel{
             new Thread() {
                 @Override public void run() {
                     while (true) {
-                        try {
-                            Thread.sleep(500);
-                            game.movePieceDown();
-                        } catch (InterruptedException e) {}
+                        if (UI.isPaused()) {
+                            try {
+                                Thread.sleep(500);
+                                game.movePieceDown();
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                        }
                     }
                 }
             }.start();   

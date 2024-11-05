@@ -4,7 +4,7 @@ import java.awt.Graphics;
 import javax.swing.JPanel;
 
 public class UI extends JPanel {
-    private boolean paused = false;
+    private static boolean paused = false;
     private static boolean forcePaused = false;
     private Board board;
     private static AudioPlayer musicPlayer = new AudioPlayer();
@@ -42,6 +42,10 @@ public class UI extends JPanel {
         board.newPiece();
     }
 
+    public static boolean isPaused() {
+        return !paused && !forcePaused;
+    }
+
     public void pause() {
         paused = !paused;
         if (paused) {
@@ -72,28 +76,28 @@ public class UI extends JPanel {
     }
 
     public void rotatePieceRight() {
-        if (!paused && !forcePaused) {
+        if (isPaused()) {
             board.tryMove(0, 0, 1);
             repaint();
         }
     }
 
     public void rotatePieceLeft() {
-        if (!paused && !forcePaused) {
+        if (isPaused()) {
             board.tryMove(0, 0, 3);
             repaint();
         }
     }
 
     public void movePieceDown() {
-        if (!paused && !forcePaused) {
+        if (isPaused()) {
             board.movePieceDown();
             repaint();
         }
     }
 
     public void movePieceLeft() {
-        if (!paused && !forcePaused) {
+        if (isPaused()) {
             board.tryMove(-1, 0, 0);
             repaint();
         }
@@ -106,6 +110,9 @@ public class UI extends JPanel {
         }
     }
 
+    public static void repaintUI() {
+        Tetris.game.repaint();
+    }
     
     @Override 
 	public void paintComponent(Graphics g) {
