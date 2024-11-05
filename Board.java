@@ -138,7 +138,7 @@ public class Board{
             }
         }
 
-        switch (LinesCleared) {
+        switch(LinesCleared) {    //Pontuação do jogo,dependendo do nivel que
             case 1:
                 TotalScore += 40*(TotalLevel + 1);
                 break;
