@@ -2,7 +2,6 @@
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
-
 import javax.swing.JPanel;
 
 public class UI extends JPanel {
@@ -41,11 +40,12 @@ public class UI extends JPanel {
 
     public void restart() {
         board = new Board();
+        forceUnpause();
         board.newPiece();
     }
 
     public static boolean isPaused() {
-        return !paused && !forcePaused;
+        return paused || forcePaused;
     }
 
     public void pause() {
@@ -78,28 +78,35 @@ public class UI extends JPanel {
     }
 
     public void rotatePieceRight() {
-        if (isPaused()) {
+        if (!isPaused()) {
             board.tryMove(0, 0, 1);
             repaint();
         }
     }
 
     public void rotatePieceLeft() {
-        if (isPaused()) {
+        if (!isPaused()) {
             board.tryMove(0, 0, 3);
             repaint();
         }
     }
 
     public void movePieceDown() {
-        if (isPaused()) {
+        if (!isPaused()) {
             board.movePieceDown();
             repaint();
         }
     }
 
+    public void movePieceDownGravity() {
+        if (!isPaused()) {
+            board.movePieceDownGravity();
+            repaint();
+        }
+    }
+
     public void movePieceLeft() {
-        if (isPaused()) {
+        if (!isPaused()) {
             board.tryMove(-1, 0, 0);
             repaint();
         }
@@ -156,7 +163,7 @@ public class UI extends JPanel {
             g.fillRect(getWindowWidth()/2  + (int) ((Board.BOARD_WIDTH/2 + 1.25)*getSquareSize()), getWindowHeight()/4 - (int) (0.25*getSquareSize()) + (int) (0.25*getSquareSize()), (int) ((Board.BOARD_WIDTH -  4.5)*getSquareSize()), (int) ((Board.BOARD_HEIGHT - 15.25)*getSquareSize()));
 
             // Piece UI
-            g.setColor(board.getNextPiece().getColor());
+            g.setColor(board.getNextPiece().getMainColor()); //TODO: mudar para a cor da peça completa
             for(int[] square : board.getNextPiece().getShape(0)){
                 g.fillRect( (square[0] * getSquareSize()) + getWindowWidth()/2  + (int) ((Board.BOARD_WIDTH/2 + 2.5 )*getSquareSize()), (square[1] * getSquareSize()) + getWindowHeight()/4 - (int) (0.25*getSquareSize()) + (int) (0.25*getSquareSize()), getSquareSize() -1, getSquareSize() -1);
             }
@@ -191,9 +198,18 @@ public class UI extends JPanel {
             
 		for (int i = 0; i < Board.BOARD_WIDTH; i++) {
 			for (int j = 0; j < Board.BOARD_HEIGHT; j++) {
-				g.setColor(this.board.getSquare(i, j).getColor());
+				g.setColor(this.board.getSquare(i, j).getMainColor());
 				g.fillRect(getWindowWidth()/2 + getSquareSize()*(i-Board.BOARD_WIDTH/2), getWindowHeight()/20 + getSquareSize()*j, getSquareSize()-1, getSquareSize()-1);
-			}
+                g.setColor(this.board.getSquare(i, j).getHighlightColor());
+                g.fillRect(getWindowWidth()/2 + getSquareSize()*(i-Board.BOARD_WIDTH/2), getWindowHeight()/20 + getSquareSize()*j, getSquareSize()/6, getSquareSize()/6);
+                if (!this.board.getSquare(i, j).isVariant()) {
+                    g.fillRect(getWindowWidth()/2 + getSquareSize()*(i-Board.BOARD_WIDTH/2) + getSquareSize()/6, getWindowHeight()/20 + getSquareSize()*j + getSquareSize()/6, getSquareSize()/3, getSquareSize()/6);
+                    g.fillRect(getWindowWidth()/2 + getSquareSize()*(i-Board.BOARD_WIDTH/2) + getSquareSize()/6, getWindowHeight()/20 + getSquareSize()*j + getSquareSize()/3 -1, getSquareSize()/6, getSquareSize()/6);
+                } else {
+                    g.fillRect(getWindowWidth()/2 + getSquareSize()*(i-Board.BOARD_WIDTH/2) + getSquareSize()/6, getWindowHeight()/20 + getSquareSize()*j + getSquareSize()/6, getSquareSize()*2/3, getSquareSize()*2/3);
+                }
+
+            }
 		}
 	}
 }

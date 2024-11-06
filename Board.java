@@ -1,4 +1,5 @@
 import java.awt.Color;
+import java.util.HashSet;
 
 
 public class Board{
@@ -62,13 +63,16 @@ public class Board{
     public boolean tryMove(int x, int y, int rotation) {
         if (!checkCollision(currentPieceCoords[0] + x, currentPieceCoords[1] + y, (currentPieceRotation + rotation) % 4)) {
             for (Square s : occupiedSquares(currentPieceCoords[0], currentPieceCoords[1], currentPieceRotation)) {
-                s.setColor(EMPTY_COLOR);
+                s.setMainColor(EMPTY_COLOR);
+                s.setHighlightColor(EMPTY_COLOR);
             }
             currentPieceCoords[0] += x;
             currentPieceCoords[1] += y;
             currentPieceRotation = (currentPieceRotation + rotation) % 4;
             for (Square s : occupiedSquares(currentPieceCoords[0], currentPieceCoords[1], currentPieceRotation)) {
-                s.setColor(currentPiece.getColor());
+                s.setMainColor(currentPiece.getMainColor());
+                s.setHighlightColor(currentPiece.getHighlightColor());
+                s.setVariant(currentPiece.isVariant());
             }
             return true;
         }
@@ -96,28 +100,15 @@ public class Board{
         for (int i = 0; i < 4; i++) {
             int x = currentPiece.getShape(currentPieceRotation)[i][0];
             int y = currentPiece.getShape(currentPieceRotation)[i][1];
-            this.board[currentPieceCoords[0] + x][currentPieceCoords[1] + y].setColor(currentPiece.getColor());
+            this.board[currentPieceCoords[0] + x][currentPieceCoords[1] + y].setMainColor(currentPiece.getMainColor());
+            this.board[currentPieceCoords[0] + x][currentPieceCoords[1] + y].setHighlightColor(currentPiece.getHighlightColor());
+            this.board[currentPieceCoords[0] + x][currentPieceCoords[1] + y].setVariant(currentPiece.isVariant());
         }
-    }
-    
-    public void clearLine(int j) {
-        UI.forcePause();
-        for (int i = 0; i < BOARD_WIDTH; i++) {
-            this.board[i][j].setOccupied(false);
-            this.board[i][j].setColor(EMPTY_COLOR);
-            UI.repaintUI();
-            Thread.sleep(50);
-        }
-        for (int k = j; k > 0; k--) {
-            for (int i = 0; i < BOARD_WIDTH; i++) {
-                this.board[i][k].setOccupied(this.board[i][k-1].isOccupied());
-                this.board[i][k].setColor(this.board[i][k-1].getColor());
-            }
-        }
-        UI.forceUnpause();
     }
     
     public void clearLines() {
+        UI.forcePause();
+        HashSet<Integer> lines = new HashSet<>();
         int LinesCleared = 0;
         for (int j = 0; j < BOARD_HEIGHT; j++) {
             boolean full = true;
@@ -128,7 +119,7 @@ public class Board{
                 }
             }
             if (full) {
-                clearLine(j);
+                lines.add(j);
                 LinesCleared++;
                 TotalLinesCleared++;
                 if(TotalLinesCleared == 10)
@@ -148,9 +139,37 @@ public class Board{
         if(LinesCleared == 0) {
             UI.playSound("src\\FallingPieceSound.wav");
         }
+        if (!lines.isEmpty()) {
+            
+            for (int q=0; q < BOARD_WIDTH; q++) {
+                for (int j : lines) {
+                    int i = BOARD_WIDTH/2 + ( q % 2 == 0 ? q/2 : -(q/2+1)); //index lookup here
+                    this.board[i][j].setOccupied(false);
+                    this.board[i][j].setMainColor(EMPTY_COLOR);
+                    this.board[i][j].setHighlightColor(EMPTY_COLOR);
+                }
+                try {
+                    Thread.sleep(34);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                if (q % 2 == 0) UI.repaintUI();
+            }
+            for (int j : lines) {
+                for (int k = j; k > 0; k--) {
+                    for (int i = 0; i < BOARD_WIDTH; i++) {
+                        this.board[i][k].setOccupied(this.board[i][k-1].isOccupied());
+                        this.board[i][k].setMainColor(this.board[i][k-1].getMainColor());
+                        this.board[i][k].setHighlightColor(this.board[i][k-1].getHighlightColor());
+                        this.board[i][k].setVariant(this.board[i][k-1].isVariant());
+                    }
+                }
+            }
+        }
+        UI.forceUnpause();
     }
 
-    public void movePieceDown() {
+    public void movePieceDownGravity() {
         if(!tryMove(0, 1, 0)) {
             for (int i = 0; i < 4; i++) {
                 int x = currentPiece.getShape(currentPieceRotation)[i][0];
@@ -159,6 +178,17 @@ public class Board{
             }
             clearLines();
             newPiece();
+        }
+    }
+
+    public void movePieceDown() {
+        if (!tryMove(0, 1, 0)) {
+            for (int i = 0; i < 4; i++) {
+                int x = currentPiece.getShape(currentPieceRotation)[i][0];
+                int y = currentPiece.getShape(currentPieceRotation)[i][1];
+                this.board[currentPieceCoords[0] + x][currentPieceCoords[1] + y].setOccupied(true);
+            }
+
         }
     }
 
