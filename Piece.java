@@ -80,6 +80,10 @@ public class Piece {
         }
     }
 
+    public PieceType getType() {
+        return this.type;
+    }
+
     public int[][] getShape(int rotation) {
         return this.shape[rotation];
     }

@@ -99,13 +99,6 @@ public class UI extends JPanel {
         }
     }
 
-    public void movePieceDownGravity() {
-        if (!isPaused()) {
-            board.movePieceDownGravity();
-            repaint();
-        }
-    }
-
     public void movePieceLeft() {
         if (!isPaused()) {
             board.tryMove(-1, 0, 0);

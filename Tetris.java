@@ -2,13 +2,12 @@ import java.awt.EventQueue;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.HashSet;
-import java.util.Iterator;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 public class Tetris extends JPanel{
 
-    private static final int FRAME_LENGTH = 17;
+    public static final int FRAME_LENGTH = 17;
     public static UI game = new UI();
     private static int das = 0;
     private static int time = 0;
@@ -35,6 +34,8 @@ public class Tetris extends JPanel{
                         pressedKeys.add(e.getKeyCode());
                         if (e.getKeyCode() == KeyEvent.VK_A || e.getKeyCode() == KeyEvent.VK_D) das = 0;
                         if (e.getKeyCode() == KeyEvent.VK_SPACE) gravity /= 2;
+                        if (e.getKeyCode() == KeyEvent.VK_J) game.rotatePieceLeft();
+                        if (e.getKeyCode() == KeyEvent.VK_L) game.rotatePieceRight();
                     }
                 }
 
@@ -50,42 +51,9 @@ public class Tetris extends JPanel{
                         case 'q' -> System.exit(0);
                         case 'r' -> game.restart();
                         case 'e' -> game.pause();
-                        case 'j' -> game.rotatePieceLeft();
-                        case 'l' -> game.rotatePieceRight();
                     }
                 }
             });
-            
-            new Thread() {
-                @Override public void run() {
-                    while (true) {
-                        if (das == 16 || das == 0) {
-                            if (pressedKeys.contains(KeyEvent.VK_A)) {
-                                game.movePieceLeft();
-                                if (das == 16) das = 10;
-                            }
-                            if (pressedKeys.contains(KeyEvent.VK_D)) {
-                                game.movePieceRight();
-                                if (das == 16) das = 10;
-                            }
-                        }
-                        if (!pressedKeys.isEmpty()) {
-                            for (Iterator<Integer> it = pressedKeys.iterator(); it.hasNext();) {
-                                switch (it.next()) {
-                                    case KeyEvent.VK_A -> das++;
-                                    case KeyEvent.VK_D -> das++;
-                                }
-                            }
-                        }
-                        try {
-                            Thread.sleep(FRAME_LENGTH);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                        //System.out.println(das);
-                    }
-                }
-            }.start();
 
             new Thread() {
                 @Override public void run() {
@@ -93,9 +61,21 @@ public class Tetris extends JPanel{
                         if (!UI.isPaused()) {
                             time += FRAME_LENGTH;
                             if (time >= gravity) {
-                                game.movePieceDownGravity();
+                                game.movePieceDown();
                                 time = 0;
                             }
+
+                            if (das == 16 || das == 0) {
+                                if (pressedKeys.contains(KeyEvent.VK_A)) {
+                                    game.movePieceLeft();
+                                    if (das == 16) das = 10;
+                                }
+                                if (pressedKeys.contains(KeyEvent.VK_D)) {
+                                    game.movePieceRight();
+                                    if (das == 16) das = 10;
+                                }
+                            }
+                            if (pressedKeys.contains(KeyEvent.VK_A) || pressedKeys.contains(KeyEvent.VK_D)) das ++;
                         }
                         try {
                             Thread.sleep(FRAME_LENGTH);

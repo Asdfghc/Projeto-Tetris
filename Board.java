@@ -84,8 +84,10 @@ public class Board{
         if(gameOver == true){
             return;
         }
-        currentPiece =  nextPiece;
-        nextPiece = new Piece(Piece.PieceType.values()[(int)(Math.random()*7)]);
+        currentPiece = nextPiece;
+        do {
+            nextPiece = new Piece(Piece.PieceType.values()[(int)(Math.random()*7)]);
+        } while(nextPiece.getType() == currentPiece.getType());
         currentPieceCoords = new int[]{BOARD_WIDTH/2-2, 0};
         currentPieceRotation = 0;
 
@@ -166,7 +168,7 @@ public class Board{
                     this.board[i][j].setHighlightColor(EMPTY_COLOR);
                 }
                 try {
-                    Thread.sleep(34);
+                    Thread.sleep(2*Tetris.FRAME_LENGTH);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -185,7 +187,7 @@ public class Board{
         }
     }
 
-    public void movePieceDownGravity() {
+    public void movePieceDown() {
         if(!tryMove(0, 1, 0)) {
             for (int i = 0; i < 4; i++) {
                 int x = currentPiece.getShape(currentPieceRotation)[i][0];
