@@ -18,6 +18,7 @@ public class Board{
     private int TotalLevel = 0;
     private int TotalScore = 0;
 
+
     public Board() {
         this.board = new Square[BOARD_WIDTH][BOARD_HEIGHT];
         for (int i = 0; i < BOARD_WIDTH; i++) {
@@ -126,9 +127,26 @@ public class Board{
                     TotalLinesCleared = 0;
                     TotalLevel++;
                 }
-                TotalScore += 40*(TotalLevel + 1);
+               // TotalScore += 40*(TotalLevel + 1);
             }
         }
+
+        switch(LinesCleared) {    //Pontuação do jogo,dependendo do nivel que
+            case 1:
+                TotalScore += 40*(TotalLevel + 1);
+                break;
+            case 2:
+                TotalScore += 100*(TotalLevel + 1);
+                break;
+            case 3:
+                TotalScore += 300*(TotalLevel + 1);
+                break;
+            case 4:
+                TotalScore += 1200*(TotalLevel + 1);
+                break;
+        }
+
+        
         if(LinesCleared == 4) {
             UI.playSound("src\\ClearLineSound.wav");
         }
