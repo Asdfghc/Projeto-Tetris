@@ -107,7 +107,6 @@ public class Board{
     }
     
     public void clearLines() {
-        UI.forcePause();
         HashSet<Integer> lines = new HashSet<>();
         int LinesCleared = 0;
         for (int j = 0; j < BOARD_HEIGHT; j++) {
@@ -166,7 +165,6 @@ public class Board{
                 }
             }
         }
-        UI.forceUnpause();
     }
 
     public void movePieceDownGravity() {
@@ -178,17 +176,6 @@ public class Board{
             }
             clearLines();
             newPiece();
-        }
-    }
-
-    public void movePieceDown() {
-        if (!tryMove(0, 1, 0)) {
-            for (int i = 0; i < 4; i++) {
-                int x = currentPiece.getShape(currentPieceRotation)[i][0];
-                int y = currentPiece.getShape(currentPieceRotation)[i][1];
-                this.board[currentPieceCoords[0] + x][currentPieceCoords[1] + y].setOccupied(true);
-            }
-
         }
     }
 

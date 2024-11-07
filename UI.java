@@ -41,6 +41,7 @@ public class UI extends JPanel {
     public void restart() {
         board = new Board();
         forceUnpause();
+        if(paused) pause();
         board.newPiece();
     }
 
@@ -199,16 +200,15 @@ public class UI extends JPanel {
 		for (int i = 0; i < Board.BOARD_WIDTH; i++) {
 			for (int j = 0; j < Board.BOARD_HEIGHT; j++) {
 				g.setColor(this.board.getSquare(i, j).getMainColor());
-				g.fillRect(getWindowWidth()/2 + getSquareSize()*(i-Board.BOARD_WIDTH/2), getWindowHeight()/20 + getSquareSize()*j, getSquareSize()-1, getSquareSize()-1);
+				g.fillRect(getWindowWidth()/2 + getSquareSize()*(i-Board.BOARD_WIDTH/2) + 1, getWindowHeight()/20 + getSquareSize()*j + 1, getSquareSize() - 2, getSquareSize() - 2);
                 g.setColor(this.board.getSquare(i, j).getHighlightColor());
-                g.fillRect(getWindowWidth()/2 + getSquareSize()*(i-Board.BOARD_WIDTH/2), getWindowHeight()/20 + getSquareSize()*j, getSquareSize()/6, getSquareSize()/6);
+                g.fillRect(getWindowWidth()/2 + getSquareSize()*(i-Board.BOARD_WIDTH/2) + 1, getWindowHeight()/20 + getSquareSize()*j + 1, getSquareSize()/6, getSquareSize()/6);
                 if (!this.board.getSquare(i, j).isVariant()) {
-                    g.fillRect(getWindowWidth()/2 + getSquareSize()*(i-Board.BOARD_WIDTH/2) + getSquareSize()/6, getWindowHeight()/20 + getSquareSize()*j + getSquareSize()/6, getSquareSize()/3, getSquareSize()/6);
-                    g.fillRect(getWindowWidth()/2 + getSquareSize()*(i-Board.BOARD_WIDTH/2) + getSquareSize()/6, getWindowHeight()/20 + getSquareSize()*j + getSquareSize()/3 -1, getSquareSize()/6, getSquareSize()/6);
+                    g.fillRect(getWindowWidth()/2 + getSquareSize()*(i-Board.BOARD_WIDTH/2) + getSquareSize()/6 + 1, getWindowHeight()/20 + getSquareSize()*j + getSquareSize()/6 + 1, getSquareSize()/3, getSquareSize()/6);
+                    g.fillRect(getWindowWidth()/2 + getSquareSize()*(i-Board.BOARD_WIDTH/2) + getSquareSize()/6 + 1, getWindowHeight()/20 + getSquareSize()*j + getSquareSize()/6 + 1, getSquareSize()/6, getSquareSize()/3);
                 } else {
-                    g.fillRect(getWindowWidth()/2 + getSquareSize()*(i-Board.BOARD_WIDTH/2) + getSquareSize()/6, getWindowHeight()/20 + getSquareSize()*j + getSquareSize()/6, getSquareSize()*2/3, getSquareSize()*2/3);
+                    g.fillRect(getWindowWidth()/2 + getSquareSize()*(i-Board.BOARD_WIDTH/2) + getSquareSize()/6 + 1, getWindowHeight()/20 + getSquareSize()*j + getSquareSize()/6 + 1, getSquareSize()*2/3, getSquareSize()*2/3);
                 }
-
             }
 		}
 	}

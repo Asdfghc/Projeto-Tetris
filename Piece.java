@@ -17,7 +17,7 @@ public class Piece {
             case I -> {
                 this.mainColor = Color.CYAN;
                 this.highlightColor = Color.WHITE;
-                this.variant = false;
+                this.variant = true;
                 this.shape[0] = new int[][]{{0, 2}, {1, 2}, {2, 2}, {3, 2}};
                 this.shape[1] = new int[][]{{2, 0}, {2, 1}, {2, 2}, {2, 3}};
                 this.shape[2] = new int[][]{{0, 2}, {1, 2}, {2, 2}, {3, 2}};
