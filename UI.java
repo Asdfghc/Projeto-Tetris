@@ -82,6 +82,9 @@ public class UI extends JPanel {
         if (!isPaused()) {
             board.tryMove(0, 0, 1);
             repaint();
+            if(!soundPlayer.getSoundIsRunning()) {
+                soundPlayer.playSound("src\\RotatePieceSound.wav");
+            }
         }
     }
 
@@ -89,6 +92,9 @@ public class UI extends JPanel {
         if (!isPaused()) {
             board.tryMove(0, 0, 3);
             repaint();
+            if(!soundPlayer.getSoundIsRunning()) {
+                soundPlayer.playSound("src\\RotatePieceSound.wav");
+            }
         }
     }
 
@@ -103,6 +109,9 @@ public class UI extends JPanel {
         if (!isPaused()) {
             board.tryMove(-1, 0, 0);
             repaint();
+            if(!soundPlayer.getSoundIsRunning()) {
+                soundPlayer.playSound("src\\MovingPieceSound.wav");
+            }
         }
     }
 
@@ -110,6 +119,9 @@ public class UI extends JPanel {
         if (!paused && !forcePaused) {
             board.tryMove(1, 0, 0);
             repaint();
+            if(!soundPlayer.getSoundIsRunning()) {
+                soundPlayer.playSound("src\\MovingPieceSound.wav");
+            }
         }
     }
 

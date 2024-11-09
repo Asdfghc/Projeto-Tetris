@@ -54,4 +54,8 @@ public class AudioPlayer {
             sound.start();
         }
     }
+
+    public boolean getSoundIsRunning() {
+        return sound != null && sound.isRunning();
+    }
 }
