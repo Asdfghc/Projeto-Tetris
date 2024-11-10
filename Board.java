@@ -1,11 +1,9 @@
-import java.awt.Color;
 import java.util.HashSet;
 
 
 public class Board{
     protected static final int BOARD_HEIGHT = 20;
     protected static final int BOARD_WIDTH = 10;
-    protected static final Color EMPTY_COLOR = Color.BLACK;
     
     private final Square[][] board;
     private Piece currentPiece;
@@ -64,16 +62,13 @@ public class Board{
     public boolean tryMove(int x, int y, int rotation) {
         if (!checkCollision(currentPieceCoords[0] + x, currentPieceCoords[1] + y, (currentPieceRotation + rotation) % 4)) {
             for (Square s : occupiedSquares(currentPieceCoords[0], currentPieceCoords[1], currentPieceRotation)) {
-                s.setMainColor(EMPTY_COLOR);
-                s.setHighlightColor(EMPTY_COLOR);
+                s.setColorType(0);
             }
             currentPieceCoords[0] += x;
             currentPieceCoords[1] += y;
             currentPieceRotation = (currentPieceRotation + rotation) % 4;
             for (Square s : occupiedSquares(currentPieceCoords[0], currentPieceCoords[1], currentPieceRotation)) {
-                s.setMainColor(currentPiece.getMainColor());
-                s.setHighlightColor(currentPiece.getHighlightColor());
-                s.setVariant(currentPiece.isVariant());
+                s.setColorType(currentPiece.getColorType());
             }
             return true;
         }
@@ -103,9 +98,7 @@ public class Board{
         for (int i = 0; i < 4; i++) {
             int x = currentPiece.getShape(currentPieceRotation)[i][0];
             int y = currentPiece.getShape(currentPieceRotation)[i][1];
-            this.board[currentPieceCoords[0] + x][currentPieceCoords[1] + y].setMainColor(currentPiece.getMainColor());
-            this.board[currentPieceCoords[0] + x][currentPieceCoords[1] + y].setHighlightColor(currentPiece.getHighlightColor());
-            this.board[currentPieceCoords[0] + x][currentPieceCoords[1] + y].setVariant(currentPiece.isVariant());
+            this.board[currentPieceCoords[0] + x][currentPieceCoords[1] + y].setColorType(currentPiece.getColorType());
         }
     }
     
@@ -164,8 +157,7 @@ public class Board{
                 for (int j : lines) {
                     int i = BOARD_WIDTH/2 + ( q % 2 == 0 ? q/2 : -(q/2+1)); //index lookup here
                     this.board[i][j].setOccupied(false);
-                    this.board[i][j].setMainColor(EMPTY_COLOR);
-                    this.board[i][j].setHighlightColor(EMPTY_COLOR);
+                    this.board[i][j].setColorType(0);
                 }
                 try {
                     Thread.sleep(2*Game.FRAME_LENGTH);
@@ -178,9 +170,7 @@ public class Board{
                 for (int k = j; k > 0; k--) {
                     for (int i = 0; i < BOARD_WIDTH; i++) {
                         this.board[i][k].setOccupied(this.board[i][k-1].isOccupied());
-                        this.board[i][k].setMainColor(this.board[i][k-1].getMainColor());
-                        this.board[i][k].setHighlightColor(this.board[i][k-1].getHighlightColor());
-                        this.board[i][k].setVariant(this.board[i][k-1].isVariant());
+                        this.board[i][k].setColorType(this.board[i][k-1].getColorType());
                     }
                 }
             }

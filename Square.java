@@ -1,48 +1,57 @@
-
 import java.awt.Color;
 
 public class Square {
-    private Color mainColor;
-    private Color highlightColor;
-    private boolean variant;
+    private static final Color EMPTY_COLOR = Color.BLACK;
+
+    private int colorType;
     private boolean occupied;
 
+    private static final Color[][] colors = {
+        {EMPTY_COLOR, new Color(0, 255, 255), new Color(0, 0, 255), new Color(255, 165, 0)},
+        {EMPTY_COLOR, new Color(255, 255, 255), new Color(255, 255, 255), new Color(255, 255, 255)},
+        {EMPTY_COLOR, new Color(255, 255, 255), new Color(255, 255, 255), new Color(255, 255, 255)},
+        {EMPTY_COLOR, new Color(255, 255, 255), new Color(255, 255, 255), new Color(255, 255, 255)},
+        {EMPTY_COLOR, new Color(255, 255, 255), new Color(255, 255, 255), new Color(255, 255, 255)},
+        {EMPTY_COLOR, new Color(255, 255, 255), new Color(255, 255, 255), new Color(255, 255, 255)},
+        {EMPTY_COLOR, new Color(255, 255, 255), new Color(255, 255, 255), new Color(255, 255, 255)},
+        {EMPTY_COLOR, new Color(255, 255, 255), new Color(255, 255, 255), new Color(255, 255, 255)},
+        {EMPTY_COLOR, new Color(255, 255, 255), new Color(255, 255, 255), new Color(255, 255, 255)},
+        {EMPTY_COLOR, new Color(255, 255, 255), new Color(255, 255, 255), new Color(255, 255, 255)}
+    };
+
     public Square() {
-        this.mainColor = Board.EMPTY_COLOR;
-        this.highlightColor = Board.EMPTY_COLOR;
-        this.variant = false;
+        this.colorType = 0;
         this.occupied = false;
     }
 
-    public Color getMainColor() {
-        return this.mainColor;
+    public void setColorType(int colorType) {
+        this.colorType = colorType;
     }
 
-    public void setMainColor(Color color) {
-        this.mainColor = color;
+    public int getColorType() {
+        return this.colorType;
     }
 
-    public Color getHighlightColor() {
-        return this.highlightColor;
-    }
-
-    public void setHighlightColor(Color color) {
-        this.highlightColor = color;
-    }
-
-    public boolean isVariant() {
-        return this.variant;
-    }
-
-    public void setVariant(boolean variant) {
-        this.variant = variant;
+    public void setOccupied(boolean occupied) {
+        this.occupied = occupied;
     }
 
     public boolean isOccupied() {
         return this.occupied;
     }
 
-    public void setOccupied(boolean occupied) {
-        this.occupied = occupied;
+    public Color getMainColor(int level) {
+        return colors[level][this.colorType];
+    }
+
+    public Color getHighlightColor(int level) {
+        if (this.colorType == 0) {
+            return EMPTY_COLOR;
+        }
+        return new Color(255, 255, 255);
+    }
+
+    public boolean isVariant() {
+        return this.colorType == 1;
     }
 }

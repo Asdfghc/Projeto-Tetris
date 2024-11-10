@@ -136,7 +136,9 @@ public class Game extends JPanel implements KeyListener{
             g.fillRect(getWindowWidth()/2  + (int) ((Board.BOARD_WIDTH/2 + 1.25)*getSquareSize()), getWindowHeight()/4 - (int) (0.25*getSquareSize()) + (int) (0.25*getSquareSize()), (int) ((Board.BOARD_WIDTH -  4.5)*getSquareSize()), (int) ((Board.BOARD_HEIGHT - 15.25)*getSquareSize()));
 
             // Piece UI
-            g.setColor(board.getNextPiece().getMainColor()); //TODO: mudar para a cor da peça completa
+            Square nextPieceSquare = new Square();
+            nextPieceSquare.setColorType(board.getNextPiece().getColorType());
+            g.setColor(nextPieceSquare.getMainColor(board.getLevel())); //TODO: mudar para a cor da peça completa
             for(int[] square : board.getNextPiece().getShape(0)){
                 g.fillRect( (square[0] * getSquareSize()) + getWindowWidth()/2  + (int) ((Board.BOARD_WIDTH/2 + 2.5 )*getSquareSize()), (square[1] * getSquareSize()) + getWindowHeight()/4 - (int) (0.25*getSquareSize()) + (int) (0.25*getSquareSize()), getSquareSize() -1, getSquareSize() -1);
             }
@@ -171,9 +173,9 @@ public class Game extends JPanel implements KeyListener{
             
         for (int i = 0; i < Board.BOARD_WIDTH; i++) {
             for (int j = 0; j < Board.BOARD_HEIGHT; j++) {
-                g.setColor(board.getSquare(i, j).getMainColor());
+                g.setColor(board.getSquare(i, j).getMainColor(board.getLevel()));
                 g.fillRect(getWindowWidth()/2 + getSquareSize()*(i-Board.BOARD_WIDTH/2) + 1, getWindowHeight()/20 + getSquareSize()*j + 1, getSquareSize() - 2, getSquareSize() - 2);
-                g.setColor(board.getSquare(i, j).getHighlightColor());
+                g.setColor(board.getSquare(i, j).getHighlightColor(board.getLevel()));
                 g.fillRect(getWindowWidth()/2 + getSquareSize()*(i-Board.BOARD_WIDTH/2) + 1, getWindowHeight()/20 + getSquareSize()*j + 1, getSquareSize()/6, getSquareSize()/6);
                 if (!board.getSquare(i, j).isVariant()) {
                     g.fillRect(getWindowWidth()/2 + getSquareSize()*(i-Board.BOARD_WIDTH/2) + getSquareSize()/6 + 1, getWindowHeight()/20 + getSquareSize()*j + getSquareSize()/6 + 1, getSquareSize()/3, getSquareSize()/6);
