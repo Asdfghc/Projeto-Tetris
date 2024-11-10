@@ -22,6 +22,7 @@ public class Tetris extends JPanel{
             //f.setExtendedState(JFrame.MAXIMIZED_BOTH); 
             //f.setUndecorated(true);
             f.setVisible(true);
+            f.setFocusable(true);
             
             f.add(game);
 
