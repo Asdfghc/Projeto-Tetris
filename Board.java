@@ -26,9 +26,9 @@ public class Board{
                 this.board[i][j] = new Square();
             }
         }
-        UI.forceUnpause();
-        UI.stopMusic();
-        UI.playMusic("src\\TetrisMusic.wav");
+        Game.forceUnpause();
+        Game.stopMusic();
+        Game.playMusic("src\\TetrisMusic.wav");
         nextPiece = new Piece(Piece.PieceType.values()[(int)(Math.random()*7)]);
     }
 
@@ -94,9 +94,9 @@ public class Board{
         if(checkCollision(currentPieceCoords[0], currentPieceCoords[1], currentPieceRotation)){  // v se tem colição, se tiver, vai ser true e vai printar game over
             gameOver = true;
             System.out.println("Game Over");
-            UI.forcePause();
-            UI.stopMusic();
-            UI.playSound("src\\GameOverSound.wav");
+            Game.forcePause();
+            Game.stopMusic();
+            Game.playSound("src\\GameOverSound.wav");
 
             return;
         }
@@ -150,13 +150,13 @@ public class Board{
 
         
         if(LinesCleared == 4) {
-            UI.playSound("src\\ClearLineSound.wav");
+            Game.playSound("src\\ClearLineSound.wav");
         }
         if(LinesCleared < 4 && LinesCleared >= 1 ) {
-            UI.playSound("src\\ClearOneLineSound.wav");
+            Game.playSound("src\\ClearOneLineSound.wav");
         }
         if(LinesCleared == 0) {
-            UI.playSound("src\\FallingPieceSound.wav");
+            Game.playSound("src\\FallingPieceSound.wav");
         }
         if (!lines.isEmpty()) {
             
@@ -168,11 +168,11 @@ public class Board{
                     this.board[i][j].setHighlightColor(EMPTY_COLOR);
                 }
                 try {
-                    Thread.sleep(2*Tetris.FRAME_LENGTH);
+                    Thread.sleep(2*Game.FRAME_LENGTH);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                if (q % 2 == 0) UI.repaintUI();
+                if (q % 2 == 0) Game.repaintUI();
             }
             for (int j : lines) {
                 for (int k = j; k > 0; k--) {
