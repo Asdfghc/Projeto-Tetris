@@ -6,20 +6,19 @@ import java.awt.event.KeyListener;
 import java.util.HashSet;
 import javax.swing.JPanel;
 
-
-
 public class Game extends JPanel implements KeyListener{
 
     public static final int FRAME_LENGTH = 17;
+    private static final int[] gravityLevels = {48, 43, 38, 33, 28, 23, 18, 13, 8, 6, 5, 5, 5, 4, 4, 4, 3, 3, 3, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1};
+    private static int gravity = gravityLevels[0];
     private static int das = 0;
     private static int time = 0;
-    private static int gravity = 160;
     private Board board;
     private static boolean paused = false;
     private static boolean forcePaused = false;
-    private static AudioPlayer musicPlayer = new AudioPlayer();
-    private static AudioPlayer soundPlayer = new AudioPlayer();
-    private Thread thread;
+    private static final AudioPlayer musicPlayer = new AudioPlayer();
+    private static final AudioPlayer soundPlayer = new AudioPlayer();
+    private final Thread thread;
 
     public Game() {
         restart();
@@ -32,7 +31,7 @@ public class Game extends JPanel implements KeyListener{
             @Override public void run() {
                 while (true) {
                     if (!isPaused()) {
-                        time += FRAME_LENGTH;
+                        time ++;
                         if (time >= gravity) {
                             movePieceDown();
                             time = 0;
@@ -67,7 +66,7 @@ public class Game extends JPanel implements KeyListener{
         if (!pressedKeys.contains(e.getKeyCode())) {
             pressedKeys.add(e.getKeyCode());
             if (e.getKeyCode() == KeyEvent.VK_A || e.getKeyCode() == KeyEvent.VK_D) das = 0;
-            if (e.getKeyCode() == KeyEvent.VK_SPACE) gravity /= 2;
+            if (e.getKeyCode() == KeyEvent.VK_SPACE) gravity = 2;
             if (e.getKeyCode() == KeyEvent.VK_J) this.rotatePieceLeft();
             if (e.getKeyCode() == KeyEvent.VK_L) this.rotatePieceRight();
         }
@@ -76,7 +75,7 @@ public class Game extends JPanel implements KeyListener{
     @Override
     public synchronized void keyReleased(KeyEvent e) {
         pressedKeys.remove(e.getKeyCode());
-        if (e.getKeyCode() == KeyEvent.VK_SPACE) gravity *= 2;
+        if (e.getKeyCode() == KeyEvent.VK_SPACE) gravity = gravityLevels[board.getLevel()];
     }
     
     @Override
@@ -100,22 +99,27 @@ public class Game extends JPanel implements KeyListener{
             g.setFont(new Font("Clarendo", Font.BOLD, 80));
             g.drawString("TETRIS", getWindowWidth()/2 , (int) ((Board.BOARD_HEIGHT - 6.6)*getSquareSize()));
         
-
+        int boardOriginX = getWindowWidth()/2 - Board.BOARD_WIDTH/2*getSquareSize();
+        int boardOriginY = getWindowHeight()/20;
+        int boardWidth = getSquareSize()*Board.BOARD_WIDTH;
+        int boardHeight = getSquareSize()*Board.BOARD_HEIGHT;
+            
+        // All Panel Color
+        g.setColor(Color.BLACK);
+        g.fillRect(0, 0, getWindowWidth(), getWindowHeight());
+        
         //Board UI
-            // all Panel Color
-            g.setColor(Color.BLACK);
-            g.fillRect(0, 0, getWindowWidth(), getWindowHeight());
-
-            // Board Box Color
+            int BoardBorderSize = (int) (0.25*getSquareSize());
+            // Board Border Color
             g.setColor(Color.CYAN);
-            g.fillRect(getWindowWidth()/2 - (int) ((Board.BOARD_WIDTH/2+0.25)*getSquareSize()), getWindowHeight()/20 - (int) (0.25*getSquareSize()), (int) ((Board.BOARD_WIDTH+0.5)*getSquareSize()), (int) ((Board.BOARD_HEIGHT+0.5)*getSquareSize()));
+            g.fillRect(boardOriginX - BoardBorderSize, boardOriginY - BoardBorderSize, boardWidth + 2*BoardBorderSize, boardHeight + 2*BoardBorderSize);
 
-            //inside Board color
+            // Board color
             g.setColor(Color.BLACK);
-            g.fillRect(getWindowWidth()/2 - Board.BOARD_WIDTH/2*getSquareSize(), getWindowHeight()/20 - 1, getSquareSize()*Board.BOARD_WIDTH, getSquareSize()* Board.BOARD_HEIGHT);
+            g.fillRect(boardOriginX, boardOriginY, boardWidth, boardHeight);
 
         // Score UI
-            //Box UI
+            //Box UI //TODO: consertar
             g.setColor(Color.CYAN);
             g.fillRect(getWindowWidth()/2  + (int) ((Board.BOARD_WIDTH/2 + 1)*getSquareSize()), getWindowHeight()/17 - (int) (0.25*getSquareSize()), (int) ((Board.BOARD_WIDTH -  2.75)*getSquareSize()), (int) ((Board.BOARD_HEIGHT - 17)*getSquareSize()));
 
@@ -127,61 +131,66 @@ public class Game extends JPanel implements KeyListener{
             g.setFont(new Font("Clarendo", Font.BOLD, 20));
             g.drawString("Score: " + board.getScore(), getWindowWidth()/2  + (int) ((Board.BOARD_WIDTH/2 + 2)*getSquareSize()), (int) ((Board.BOARD_HEIGHT - 17.10)*getSquareSize()));
 
-        // Next Pice UI
-            //Box UI
-            g.setColor(Color.CYAN);
-            g.fillRect(getWindowWidth()/2  + (int) ((Board.BOARD_WIDTH/2 + 1)*getSquareSize()), getWindowHeight()/4 - (int) (0.25*getSquareSize()), (int) ((Board.BOARD_WIDTH -  4)*getSquareSize()), (int) ((Board.BOARD_HEIGHT - 14.75)*getSquareSize()));
-
-            g.setColor(Color.black);
-            g.fillRect(getWindowWidth()/2  + (int) ((Board.BOARD_WIDTH/2 + 1.25)*getSquareSize()), getWindowHeight()/4 - (int) (0.25*getSquareSize()) + (int) (0.25*getSquareSize()), (int) ((Board.BOARD_WIDTH -  4.5)*getSquareSize()), (int) ((Board.BOARD_HEIGHT - 15.25)*getSquareSize()));
-
-            // Piece UI
-            Square nextPieceSquare = new Square();
-            nextPieceSquare.setColorType(board.getNextPiece().getColorType());
-            g.setColor(nextPieceSquare.getMainColor(board.getLevel())); //TODO: mudar para a cor da peça completa
-            for(int[] square : board.getNextPiece().getShape(0)){
-                g.fillRect( (square[0] * getSquareSize()) + getWindowWidth()/2  + (int) ((Board.BOARD_WIDTH/2 + 2.5 )*getSquareSize()), (square[1] * getSquareSize()) + getWindowHeight()/4 - (int) (0.25*getSquareSize()) + (int) (0.25*getSquareSize()), getSquareSize() -1, getSquareSize() -1);
-            }
             
         // Level UI
-            //Box UI
+            //Box UI //TODO: consertar
             g.setColor(Color.CYAN);
             g.fillRect(getWindowWidth()/2  + (int) ((Board.BOARD_WIDTH/2 + 1)*getSquareSize()), getWindowHeight()/2 -  (int) (0.25*getSquareSize()) + 3* (((int) (0.25*getSquareSize()))), (int) ((Board.BOARD_WIDTH -  2.75)*getSquareSize()), (int) ((Board.BOARD_HEIGHT - 17)*getSquareSize()));
             
             g.setColor(Color.black);
             g.fillRect(getWindowWidth()/2  + (int) ((Board.BOARD_WIDTH/2 + 1.25)*getSquareSize()), getWindowHeight()/2 - (int) (0.25*getSquareSize()) + 4* (((int) (0.25*getSquareSize()))), (int) ((Board.BOARD_WIDTH -  3.25)*getSquareSize()), (int) ((Board.BOARD_HEIGHT - 17.5)*getSquareSize()));
+            
+        // PIECES
+
+        int outline = 2;
+        int highlightSize = 8;
+        // Next Piece UI
+            //Border UI
+            int nextPieceBoxOriginX = getWindowWidth()/2  + (int) ((Board.BOARD_WIDTH/2 + 1)*getSquareSize());
+            int nextPieceBoxOriginY = getWindowHeight()/4 - (int) (0.25*getSquareSize());
+            int nextPieceBoxWidth = (int) 6*getSquareSize();
+            int nextPieceBoxHeight = (int) 4*getSquareSize();
+            int nextPieceBoxBorderSize = (int) (0.25*getSquareSize());
+
+            g.setColor(Color.CYAN);
+            g.fillRect(nextPieceBoxOriginX - nextPieceBoxBorderSize, nextPieceBoxOriginY - nextPieceBoxBorderSize, nextPieceBoxWidth + 2*nextPieceBoxBorderSize, nextPieceBoxHeight + 2*nextPieceBoxBorderSize);
+
+            g.setColor(Color.black);
+            g.fillRect(nextPieceBoxOriginX, nextPieceBoxOriginY, nextPieceBoxWidth, nextPieceBoxHeight);
+
+            // Piece UI //TODO: Consertar
+            Square nextPieceSquare = new Square();
+            nextPieceSquare.setColorType(board.getNextPiece().getColorType());
+            for(int[] square : board.getNextPiece().getShape(0)){
+                g.setColor(nextPieceSquare.getMainColor(board.getLevel()));
+                g.fillRect( (square[0] * getSquareSize()) + getWindowWidth()/2  + (int) ((Board.BOARD_WIDTH/2 + 2.5 )*getSquareSize()) + outline, (square[1] * getSquareSize()) + getWindowHeight()/4 - (int) (0.25*getSquareSize()) + (int) (0.25*getSquareSize()) + outline, getSquareSize() -2*outline, getSquareSize() -2*outline);
+                g.setColor(nextPieceSquare.getHighlightColor(board.getLevel()));
+                g.fillRect( (square[0] * getSquareSize()) + getWindowWidth()/2  + (int) ((Board.BOARD_WIDTH/2 + 2.5 )*getSquareSize()) + outline, (square[1] * getSquareSize()) + getWindowHeight()/4 - (int) (0.25*getSquareSize()) + (int) (0.25*getSquareSize()) + outline, getSquareSize()/highlightSize, getSquareSize()/highlightSize);
+                if (!nextPieceSquare.isVariant()) {
+                    g.fillRect( (square[0] * getSquareSize()) + getWindowWidth()/2  + (int) ((Board.BOARD_WIDTH/2 + 2.5 )*getSquareSize()) + getSquareSize()/highlightSize + outline, (square[1] * getSquareSize()) + getWindowHeight()/4 - (int) (0.25*getSquareSize()) + (int) (0.25*getSquareSize()) + getSquareSize()/highlightSize + outline, getSquareSize()/highlightSize * 2, getSquareSize()/highlightSize);
+                    g.fillRect( (square[0] * getSquareSize()) + getWindowWidth()/2  + (int) ((Board.BOARD_WIDTH/2 + 2.5 )*getSquareSize()) + getSquareSize()/highlightSize + outline, (square[1] * getSquareSize()) + getWindowHeight()/4 - (int) (0.25*getSquareSize()) + (int) (0.25*getSquareSize()) + getSquareSize()/highlightSize + outline, getSquareSize()/highlightSize, getSquareSize()/highlightSize * 2);
+                } else {
+                    g.fillRect( (square[0] * getSquareSize()) + getWindowWidth()/2  + (int) ((Board.BOARD_WIDTH/2 + 2.5 )*getSquareSize()) + getSquareSize()/highlightSize + outline, (square[1] * getSquareSize()) + getWindowHeight()/4 - (int) (0.25*getSquareSize()) + (int) (0.25*getSquareSize()) + getSquareSize()/highlightSize + outline, getSquareSize()*2/3, getSquareSize()*2/3);
+                }
+            }
 
             // Text UI
             g.setColor(Color.WHITE);
             g.setFont(new Font("Clarendo", Font.BOLD, 20));
             g.drawString("Level: " + board.getLevel(), getWindowWidth()/2  + (int) ((Board.BOARD_WIDTH/2 + 2)*getSquareSize()), (int) ((Board.BOARD_HEIGHT - 6.6)*getSquareSize()));
         
-        //Lines UI maybe
-            //Box UI
-            //TODO: fazer as caixas
-            //g.setColor(Color.CYAN);
-            //g.fillRect(getWindowWidth()/2  + (int) ((Board.BOARD_WIDTH/2 + 1)*getSquareSize()), getWindowHeight()/2 -  (int) (0.25*getSquareSize()) + 3* (((int) (0.25*getSquareSize()))), (int) ((Board.BOARD_WIDTH -  2.75)*getSquareSize()), (int) ((Board.BOARD_HEIGHT - 17)*getSquareSize()));
-            
-            //g.setColor(Color.black);
-            //g.fillRect(getWindowWidth()/2  + (int) ((Board.BOARD_WIDTH/2 + 1.25)*getSquareSize()), getWindowHeight()/2 - (int) (0.25*getSquareSize()) + 4* (((int) (0.25*getSquareSize()))), (int) ((Board.BOARD_WIDTH -  3.25)*getSquareSize()), (int) ((Board.BOARD_HEIGHT - 17.5)*getSquareSize()));
-
-
-            //Text UI
-            //g.setColor(Color.WHITE);
-            //g.setFont(new Font("Clarendo", Font.BOLD, 20));
-            //g.drawString("Lines: " + board.getLines(), (int) ((Board.BOARD_WIDTH -  4)*getSquareSize()), (int) ((Board.BOARD_HEIGHT - 17.10)*getSquareSize()));
-            
+        // Board UI
         for (int i = 0; i < Board.BOARD_WIDTH; i++) {
             for (int j = 0; j < Board.BOARD_HEIGHT; j++) {
                 g.setColor(board.getSquare(i, j).getMainColor(board.getLevel()));
-                g.fillRect(getWindowWidth()/2 + getSquareSize()*(i-Board.BOARD_WIDTH/2) + 1, getWindowHeight()/20 + getSquareSize()*j + 1, getSquareSize() - 2, getSquareSize() - 2);
+                g.fillRect(boardOriginX + outline + i*getSquareSize(), boardOriginY + outline + getSquareSize()*j, getSquareSize() - 2*outline, getSquareSize() - 2*outline);
                 g.setColor(board.getSquare(i, j).getHighlightColor(board.getLevel()));
-                g.fillRect(getWindowWidth()/2 + getSquareSize()*(i-Board.BOARD_WIDTH/2) + 1, getWindowHeight()/20 + getSquareSize()*j + 1, getSquareSize()/6, getSquareSize()/6);
+                g.fillRect(boardOriginX + outline + i*getSquareSize(), boardOriginY + outline + getSquareSize()*j, getSquareSize()/highlightSize, getSquareSize()/highlightSize);
                 if (!board.getSquare(i, j).isVariant()) {
-                    g.fillRect(getWindowWidth()/2 + getSquareSize()*(i-Board.BOARD_WIDTH/2) + getSquareSize()/6 + 1, getWindowHeight()/20 + getSquareSize()*j + getSquareSize()/6 + 1, getSquareSize()/3, getSquareSize()/6);
-                    g.fillRect(getWindowWidth()/2 + getSquareSize()*(i-Board.BOARD_WIDTH/2) + getSquareSize()/6 + 1, getWindowHeight()/20 + getSquareSize()*j + getSquareSize()/6 + 1, getSquareSize()/6, getSquareSize()/3);
+                    g.fillRect(boardOriginX + outline + i*getSquareSize() + getSquareSize()/highlightSize, boardOriginY + outline + getSquareSize()*j + getSquareSize()/highlightSize, getSquareSize()/highlightSize * 2, getSquareSize()/highlightSize);
+                    g.fillRect(boardOriginX + outline + i*getSquareSize() + getSquareSize()/highlightSize, boardOriginY + outline + getSquareSize()*j + getSquareSize()/highlightSize, getSquareSize()/highlightSize, getSquareSize()/highlightSize * 2);
                 } else {
-                    g.fillRect(getWindowWidth()/2 + getSquareSize()*(i-Board.BOARD_WIDTH/2) + getSquareSize()/6 + 1, getWindowHeight()/20 + getSquareSize()*j + getSquareSize()/6 + 1, getSquareSize()*2/3, getSquareSize()*2/3);
+                    g.fillRect(boardOriginX + outline + i*getSquareSize() + getSquareSize()/highlightSize, boardOriginY + outline + getSquareSize()*j + getSquareSize()/highlightSize, getSquareSize()*2/3, getSquareSize()*2/3);
                 }
             }
         }

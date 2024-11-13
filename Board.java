@@ -1,5 +1,4 @@
-import java.util.HashSet;
-
+import java.util.LinkedHashSet;
 
 public class Board{
     protected static final int BOARD_HEIGHT = 20;
@@ -76,6 +75,14 @@ public class Board{
     }
 
     public void newPiece() {
+        new Thread(() -> {
+            try {
+                Thread.sleep(10*Game.FRAME_LENGTH);
+            } catch (InterruptedException e) {
+                System.err.println("InterruptedException: " + e.getMessage());
+            }
+            Game.repaintUI();
+        }).start();
         if(gameOver == true){
             return;
         }
@@ -83,7 +90,8 @@ public class Board{
         do {
             nextPiece = new Piece(Piece.PieceType.values()[(int)(Math.random()*7)]);
         } while(nextPiece.getType() == currentPiece.getType());
-        currentPieceCoords = new int[]{BOARD_WIDTH/2-2, 0};
+        if (currentPiece.getType() == Piece.PieceType.I) currentPieceCoords = new int[]{BOARD_WIDTH/2-2, -2};
+        else currentPieceCoords = new int[]{BOARD_WIDTH/2-2, -1};
         currentPieceRotation = 0;
 
         if(checkCollision(currentPieceCoords[0], currentPieceCoords[1], currentPieceRotation)){  // v se tem colição, se tiver, vai ser true e vai printar game over
@@ -103,7 +111,7 @@ public class Board{
     }
     
     public void clearLines() {
-        HashSet<Integer> lines = new HashSet<>();
+        LinkedHashSet<Integer> lines = new LinkedHashSet<>();
         int LinesCleared = 0;
         for (int j = 0; j < BOARD_HEIGHT; j++) {
             boolean full = true;
@@ -122,24 +130,16 @@ public class Board{
                     TotalLinesCleared = 0;
                     TotalLevel++;
                 }
-               // TotalScore += 40*(TotalLevel + 1);
             }
         }
 
         switch(LinesCleared) {    //Pontuação do jogo,dependendo do nivel que
-            case 1:
-                TotalScore += 40*(TotalLevel + 1);
-                break;
-            case 2:
-                TotalScore += 100*(TotalLevel + 1);
-                break;
-            case 3:
-                TotalScore += 300*(TotalLevel + 1);
-                break;
-            case 4:
-                TotalScore += 1200*(TotalLevel + 1);
-                break;
+            case 1 -> TotalScore += 40*(TotalLevel + 1);
+            case 2 -> TotalScore += 100*(TotalLevel + 1);
+            case 3 -> TotalScore += 300*(TotalLevel + 1);
+            case 4 -> TotalScore += 1200*(TotalLevel + 1);
         }
+        //Pontuação do jogo,dependendo do nivel que
 
         
         if(LinesCleared == 4) {
@@ -153,16 +153,16 @@ public class Board{
         }
         if (!lines.isEmpty()) {
             
-            for (int q=0; q < BOARD_WIDTH; q++) {
+            for (int q = 0; q < BOARD_WIDTH; q++) {
                 for (int j : lines) {
-                    int i = BOARD_WIDTH/2 + ( q % 2 == 0 ? q/2 : -(q/2+1)); //index lookup here
+                    int i = BOARD_WIDTH/2 + ( q % 2 == 0 ? q/2 : -(q/2+1));
                     this.board[i][j].setOccupied(false);
                     this.board[i][j].setColorType(0);
                 }
                 try {
                     Thread.sleep(2*Game.FRAME_LENGTH);
                 } catch (InterruptedException e) {
-                    e.printStackTrace();
+                    System.err.println("InterruptedException: " + e.getMessage());
                 }
                 if (q % 2 == 0) Game.repaintUI();
             }

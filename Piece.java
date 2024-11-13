@@ -1,5 +1,3 @@
-import java.awt.Color;
-
 public class Piece {
     public enum PieceType {
         I, J, L, O, S, T, Z

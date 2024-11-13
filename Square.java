@@ -41,7 +41,7 @@ public class Square {
     }
 
     public Color getMainColor(int level) {
-        return colors[level][this.colorType];
+        return colors[level%10][this.colorType];
     }
 
     public Color getHighlightColor(int level) {
