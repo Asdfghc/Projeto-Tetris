@@ -12,6 +12,7 @@ public class UI extends JPanel {
     private JButton PlayButton;
     private JPanel menu;
     private Game game;
+    private int highScore = 0;
     
     public UI() {
         cardlayout = new CardLayout();
@@ -32,12 +33,13 @@ public class UI extends JPanel {
     }
 
     public void menuScreen() {
+        highScore = game.getHighScore();
         cardlayout.show(container, "Menu");
         container.remove(game);
     }
 
     public void gameScreen() {
-        game = new Game();
+        game = new Game(highScore);
         container.add(game, "Game");
         cardlayout.show(container, "Game");
         game.requestFocus();

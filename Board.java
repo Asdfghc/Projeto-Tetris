@@ -125,9 +125,8 @@ public class Board{
                 lines.add(j);
                 LinesCleared++;
                 TotalLinesCleared++;
-                if(TotalLinesCleared == 10)
+                if(TotalLinesCleared % 10 == 0)
                 {
-                    TotalLinesCleared = 0;
                     TotalLevel++;
                 }
             }
