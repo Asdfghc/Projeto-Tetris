@@ -1,4 +1,6 @@
+import java.util.HashMap;
 import java.util.LinkedHashSet;
+import java.util.Map;
 
 public class Board{
     private final int boardWidth;
@@ -15,6 +17,7 @@ public class Board{
     private int TotalLevel = 0;
     private int TotalScore = 0;
 
+    private final Map<Piece.PieceType, Integer> stats = new HashMap<>();
 
     public Board(int level, int boardWidth, int boardHeight) {
         this.boardWidth = boardWidth;
@@ -24,6 +27,9 @@ public class Board{
             for (int j = 0; j < boardHeight; j++) {
                 this.board[i][j] = new Square();
             }
+        }
+        for (Piece.PieceType type : Piece.PieceType.values()) {
+            stats.put(type, 0);
         }
         Game.forceUnpause();
         Game.stopMusic();
@@ -84,6 +90,7 @@ public class Board{
         do {
             nextPiece = new Piece(Piece.PieceType.values()[(int)(Math.random()*7)]);
         } while(nextPiece.getType() == currentPiece.getType());
+        stats.put(currentPiece.getType(), stats.get(currentPiece.getType()) + 1);
         if (currentPiece.getType() == Piece.PieceType.I) currentPieceCoords = new int[]{boardWidth/2-2, -2};
         else currentPieceCoords = new int[]{boardWidth/2-2, -1};
         currentPieceRotation = 0;
@@ -209,5 +216,9 @@ public class Board{
     public int getBoardWidth()
     {
         return this.boardWidth;
+    }
+
+    public int getStats(Piece.PieceType type) {
+        return stats.get(type);
     }
 }

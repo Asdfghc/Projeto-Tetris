@@ -126,7 +126,7 @@ public class Game extends JPanel implements KeyListener{
             }
         }
 
-        int boardOriginX = (int) (imageOriginX + imageWidth*0.372f);
+        int boardOriginX = (int) (imageOriginX + imageWidth/2 - board.getBoardWidth()/2*squareSize + squareSize*0.95f);
         int boardOriginY = (int) (imageHeight*0.175f);
         g.setColor(Color.WHITE);
         g.drawRect(boardOriginX, boardOriginY, 1, 1);
@@ -165,17 +165,17 @@ public class Game extends JPanel implements KeyListener{
             g.setColor(Color.black);
             g.fillRect(linesBoxOriginX, linesBoxOriginY, linesBoxWidth, linesBoxHeight);
 
-            int linesLabelOriginX = boardOriginX + 1*squareSize + Math.min(board.getBoardWidth()*squareSize/2 - linesBoxWidth/2, board.getBoardWidth()*squareSize - (int) (10*squareSize));
+            int linesLabelOriginX = boardOriginX + (int) (0.3*squareSize) + Math.min(board.getBoardWidth()*squareSize/2 - linesBoxWidth/2, board.getBoardWidth()*squareSize - (int) (10*squareSize));
             int linesLabelOriginY = boardOriginY - (int) (2*squareSize);
 
             g.setColor(Color.WHITE);
             try {
-                Font customFont = Font.createFont(Font.TRUETYPE_FONT, new File("src\\NESCyrillic.ttf")).deriveFont(squareSize*2f);
+                Font customFont = Font.createFont(Font.TRUETYPE_FONT, new File("src\\NESCyrillic.ttf")).deriveFont(squareSize*1f);
                 g.setFont(customFont);
             } catch (FontFormatException | IOException e) {
                 e.printStackTrace();
             }
-            g.drawString("LINES - ", linesLabelOriginX, linesLabelOriginY);
+            g.drawString("LINES -", linesLabelOriginX, linesLabelOriginY);
             
         }
         
@@ -184,7 +184,7 @@ public class Game extends JPanel implements KeyListener{
 
         g.setColor(Color.WHITE);
         try {
-            Font customFont = Font.createFont(Font.TRUETYPE_FONT, new File("src\\NESCyrillic.ttf")).deriveFont(squareSize*2f);
+            Font customFont = Font.createFont(Font.TRUETYPE_FONT, new File("src\\NESCyrillic.ttf")).deriveFont(squareSize*1f);
             g.setFont(customFont);
         } catch (FontFormatException | IOException e) {
             e.printStackTrace();
@@ -195,7 +195,7 @@ public class Game extends JPanel implements KeyListener{
         if (boardWidth != 10 || boardHeight != 20) {
             
             int scoreBoxBorderSize = (int) (0.15*squareSize);
-            int scoreBoxOriginX = boardOriginX + board.getBoardWidth()*squareSize + (int) (1.5*squareSize);
+            int scoreBoxOriginX = boardOriginX + board.getBoardWidth()*squareSize + (int) (1.6*squareSize);
             int scoreBoxOriginY = boardOriginY - (int) (3*squareSize);
             int scoreBoxWidth = (int) 7*squareSize;
             int scoreBoxHeight = (int) 7*squareSize;
@@ -211,7 +211,7 @@ public class Game extends JPanel implements KeyListener{
 
             g.setColor(Color.WHITE);
             try {
-                Font customFont = Font.createFont(Font.TRUETYPE_FONT, new File("src\\NESCyrillic.ttf")).deriveFont(squareSize*2f);
+                Font customFont = Font.createFont(Font.TRUETYPE_FONT, new File("src\\NESCyrillic.ttf")).deriveFont(squareSize*1f);
                 g.setFont(customFont);
             } catch (FontFormatException | IOException e) {
                 e.printStackTrace();
@@ -223,7 +223,7 @@ public class Game extends JPanel implements KeyListener{
 
             g.setColor(Color.WHITE);
             try {
-                Font customFont = Font.createFont(Font.TRUETYPE_FONT, new File("src\\NESCyrillic.ttf")).deriveFont(squareSize*2f);
+                Font customFont = Font.createFont(Font.TRUETYPE_FONT, new File("src\\NESCyrillic.ttf")).deriveFont(squareSize*1f);
                 g.setFont(customFont);
             } catch (FontFormatException | IOException e) {
                 e.printStackTrace();
@@ -237,7 +237,7 @@ public class Game extends JPanel implements KeyListener{
 
         g.setColor(Color.WHITE);
         try {
-            Font customFont = Font.createFont(Font.TRUETYPE_FONT, new File("src\\NESCyrillic.ttf")).deriveFont(squareSize*2f);
+            Font customFont = Font.createFont(Font.TRUETYPE_FONT, new File("src\\NESCyrillic.ttf")).deriveFont(squareSize*1f);
             g.setFont(customFont);
         } catch (FontFormatException | IOException e) {
             e.printStackTrace();
@@ -253,7 +253,7 @@ public class Game extends JPanel implements KeyListener{
 
         g.setColor(Color.WHITE);
         try {
-            Font customFont = Font.createFont(Font.TRUETYPE_FONT, new File("src\\NESCyrillic.ttf")).deriveFont(squareSize*2f);
+            Font customFont = Font.createFont(Font.TRUETYPE_FONT, new File("src\\NESCyrillic.ttf")).deriveFont(squareSize*1f);
             g.setFont(customFont);
         } catch (FontFormatException | IOException e) {
             e.printStackTrace();
@@ -282,7 +282,7 @@ public class Game extends JPanel implements KeyListener{
 
             g.setColor(Color.WHITE);
             try {
-                Font customFont = Font.createFont(Font.TRUETYPE_FONT, new File("src\\NESCyrillic.ttf")).deriveFont((float) squareSize*2);
+                Font customFont = Font.createFont(Font.TRUETYPE_FONT, new File("src\\NESCyrillic.ttf")).deriveFont(squareSize*1f);
                 g.setFont(customFont);
             } catch (FontFormatException | IOException e) {
                 e.printStackTrace();
@@ -308,7 +308,7 @@ public class Game extends JPanel implements KeyListener{
 
             g.setColor(Color.WHITE);
             try {
-                Font customFont = Font.createFont(Font.TRUETYPE_FONT, new File("src\\NESCyrillic.ttf")).deriveFont((float) squareSize*2);
+                Font customFont = Font.createFont(Font.TRUETYPE_FONT, new File("src\\NESCyrillic.ttf")).deriveFont(squareSize*1f);
                 g.setFont(customFont);
             } catch (FontFormatException | IOException e) {
                 e.printStackTrace();
@@ -322,7 +322,7 @@ public class Game extends JPanel implements KeyListener{
         int levelBoxTextOriginY = boardOriginY + board.getBoardHeight()*squareSize - (int) (5.1*squareSize);
         g.setColor(Color.WHITE);
         try {
-            Font customFont = Font.createFont(Font.TRUETYPE_FONT, new File("src\\NESCyrillic.ttf")).deriveFont((float) squareSize*2);
+            Font customFont = Font.createFont(Font.TRUETYPE_FONT, new File("src\\NESCyrillic.ttf")).deriveFont(squareSize*1f);
             g.setFont(customFont);
         } catch (FontFormatException | IOException e) {
             e.printStackTrace();
@@ -373,6 +373,53 @@ public class Game extends JPanel implements KeyListener{
                     g.fillRect(boardOriginX + outline + i*squareSize + squareSize/highlightSize, boardOriginY + outline + squareSize*j + squareSize/highlightSize, squareSize*2/3, squareSize*2/3);
                 }
             }
+        }
+
+        // Stats UI
+        if (boardWidth == 10 && boardHeight == 20) {
+            int smallSquareSize = squareSize*4/5;
+
+            // Piece UI
+            for (int i = 0; i < 7; i++) {
+                Piece piece = new Piece(Piece.PieceType.values()[i]);
+                Square square = new Square();
+                square.setColorType(piece.getColorType());
+                int statsOriginX = boardOriginX - (int) (8.3*squareSize);
+                switch (piece.getType()) {
+                    case I -> statsOriginX -= squareSize*1/2;
+                    case O -> statsOriginX -= squareSize*1/2;
+                    case T -> {}
+                    case J -> {}
+                    case L -> {}
+                    case S -> {}
+                    case Z -> {}
+                }
+                int statsOriginY = boardOriginY + (int) (5*squareSize) + (int) (i*2.4*smallSquareSize);
+                for(int[] squareCoords : piece.getShape(0)){
+                    g.setColor(square.getMainColor(board.getLevel()));
+                    g.fillRect(statsOriginX + outline + squareCoords[0]*smallSquareSize, statsOriginY + outline + squareCoords[1]*smallSquareSize, smallSquareSize - 2*outline, smallSquareSize - 2*outline);
+                    g.setColor(square.getHighlightColor(board.getLevel()));
+                    g.fillRect(statsOriginX + outline + squareCoords[0]*smallSquareSize, statsOriginY + outline + squareCoords[1]*smallSquareSize, smallSquareSize/highlightSize, smallSquareSize/highlightSize);
+                    if (!square.isVariant()) {
+                        g.fillRect(statsOriginX + outline + squareCoords[0]*smallSquareSize + smallSquareSize/highlightSize, statsOriginY + outline + squareCoords[1]*smallSquareSize + smallSquareSize/highlightSize, smallSquareSize/highlightSize * 2, smallSquareSize/highlightSize);
+                        g.fillRect(statsOriginX + outline + squareCoords[0]*smallSquareSize + smallSquareSize/highlightSize, statsOriginY + outline + squareCoords[1]*smallSquareSize + smallSquareSize/highlightSize, smallSquareSize/highlightSize, smallSquareSize/highlightSize * 2);
+                    } else {
+                        g.fillRect(statsOriginX + outline + squareCoords[0]*smallSquareSize + smallSquareSize/highlightSize, statsOriginY + outline + squareCoords[1]*smallSquareSize + smallSquareSize/highlightSize, smallSquareSize*2/3, smallSquareSize*2/3);
+                    }
+                }
+                // Stats Text
+                int statsLabelOriginX = boardOriginX - (int) (5.3*squareSize);
+                int statsLabelOriginY = boardOriginY + (int) (7*squareSize);
+                g.setColor(Color.RED);
+                try {
+                    Font customFont = Font.createFont(Font.TRUETYPE_FONT, new File("src\\NESCyrillic.ttf")).deriveFont(squareSize*1f);
+                    g.setFont(customFont);
+                } catch (FontFormatException | IOException e) {
+                    e.printStackTrace();
+                }
+                g.drawString(new DecimalFormat("000").format(board.getStats(piece.getType())), statsLabelOriginX, statsLabelOriginY + (int) (i*2.5*smallSquareSize));
+            }
+
         }
     }
 

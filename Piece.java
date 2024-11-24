@@ -1,6 +1,6 @@
 public class Piece {
     public enum PieceType {
-        I, J, L, O, S, T, Z
+        T, J, Z, O, S, L, I
     }
     private PieceType type;
     private int[][][] shape; //[rotation][squares][x, y]
