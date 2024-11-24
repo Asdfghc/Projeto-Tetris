@@ -78,6 +78,58 @@ public class Board{
                 s.setColorType(currentPiece.getColorType());
             }
             return true;
+        } else if (x == 0 && y == 0) {
+            if (!checkCollision(currentPieceCoords[0] + 1, currentPieceCoords[1], (currentPieceRotation + rotation) % 4)) {
+                for (Square s : occupiedSquares(currentPieceCoords[0], currentPieceCoords[1], currentPieceRotation)) {
+                    s.setColorType(0);
+                }
+                currentPieceCoords[0] += 1;
+                currentPieceRotation = (currentPieceRotation + rotation) % 4;
+                for (Square s : occupiedSquares(currentPieceCoords[0], currentPieceCoords[1], currentPieceRotation)) {
+                    s.setColorType(currentPiece.getColorType());
+                }
+                return true;
+            } else if (!checkCollision(currentPieceCoords[0] - 1, currentPieceCoords[1], (currentPieceRotation + rotation) % 4)) {
+                for (Square s : occupiedSquares(currentPieceCoords[0], currentPieceCoords[1], currentPieceRotation)) {
+                    s.setColorType(0);
+                }
+                currentPieceCoords[0] -= 1;
+                currentPieceRotation = (currentPieceRotation + rotation) % 4;
+                for (Square s : occupiedSquares(currentPieceCoords[0], currentPieceCoords[1], currentPieceRotation)) {
+                    s.setColorType(currentPiece.getColorType());
+                }
+                return true;
+            } else if (!checkCollision(currentPieceCoords[0] + 2, currentPieceCoords[1], (currentPieceRotation + rotation) % 4)) {
+                for (Square s : occupiedSquares(currentPieceCoords[0], currentPieceCoords[1], currentPieceRotation)) {
+                    s.setColorType(0);
+                }
+                currentPieceCoords[0] += 2;
+                currentPieceRotation = (currentPieceRotation + rotation) % 4;
+                for (Square s : occupiedSquares(currentPieceCoords[0], currentPieceCoords[1], currentPieceRotation)) {
+                    s.setColorType(currentPiece.getColorType());
+                }
+                return true;
+            } else if (!checkCollision(currentPieceCoords[0], currentPieceCoords[1] + 1, (currentPieceRotation + rotation) % 4)) {
+                for (Square s : occupiedSquares(currentPieceCoords[0], currentPieceCoords[1], currentPieceRotation)) {
+                    s.setColorType(0);
+                }
+                currentPieceCoords[1] += 1;
+                currentPieceRotation = (currentPieceRotation + rotation) % 4;
+                for (Square s : occupiedSquares(currentPieceCoords[0], currentPieceCoords[1], currentPieceRotation)) {
+                    s.setColorType(currentPiece.getColorType());
+                }
+                return true;
+            } else if (!checkCollision(currentPieceCoords[0], currentPieceCoords[1] + 2, (currentPieceRotation + rotation) % 4)) {
+                for (Square s : occupiedSquares(currentPieceCoords[0], currentPieceCoords[1], currentPieceRotation)) {
+                    s.setColorType(0);
+                }
+                currentPieceCoords[1] += 2;
+                currentPieceRotation = (currentPieceRotation + rotation) % 4;
+                for (Square s : occupiedSquares(currentPieceCoords[0], currentPieceCoords[1], currentPieceRotation)) {
+                    s.setColorType(currentPiece.getColorType());
+                }
+                return true;
+            }
         }
         return false;
     }
