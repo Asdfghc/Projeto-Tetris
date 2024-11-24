@@ -9,8 +9,8 @@ public class UI extends JPanel {
     
     private Container container;
     private CardLayout cardlayout;
-    private JButton PlayButton;
-    private JPanel menu;
+    private final JButton PlayButton;
+    private final JPanel menu;
     private Game game;
     private int highScore = 0;
     

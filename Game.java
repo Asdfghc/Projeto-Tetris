@@ -85,9 +85,9 @@ public class Game extends JPanel implements KeyListener{
             pressedKeys.add(e.getKeyCode());
             if (e.getKeyCode() == KeyEvent.VK_A || e.getKeyCode() == KeyEvent.VK_D || 
                 e.getKeyCode() == KeyEvent.VK_LEFT || e.getKeyCode() == KeyEvent.VK_RIGHT) das = 0;
-            if (e.getKeyCode() == KeyEvent.VK_SPACE) gravity = 2;
+            if (e.getKeyCode() == KeyEvent.VK_SPACE || e.getKeyCode() == KeyEvent.VK_DOWN) gravity = 2;
             if (e.getKeyCode() == KeyEvent.VK_J || e.getKeyCode() == KeyEvent.VK_K || e.getKeyCode() == KeyEvent.VK_Z || 
-                e.getKeyCode() == KeyEvent.VK_DOWN || e.getKeyCode() == KeyEvent.VK_S) this.rotatePieceLeft();
+                e.getKeyCode() == KeyEvent.VK_S) this.rotatePieceLeft();
             if (e.getKeyCode() == KeyEvent.VK_L || e.getKeyCode() == KeyEvent.VK_C || e.getKeyCode() == KeyEvent.VK_X || 
                 e.getKeyCode() == KeyEvent.VK_UP || e.getKeyCode() == KeyEvent.VK_W) this.rotatePieceRight();
         }
@@ -96,7 +96,7 @@ public class Game extends JPanel implements KeyListener{
     @Override
     public synchronized void keyReleased(KeyEvent e) {
         pressedKeys.remove(e.getKeyCode());
-        if (e.getKeyCode() == KeyEvent.VK_SPACE) gravity = gravityLevels[board.getLevel()];
+        if (e.getKeyCode() == KeyEvent.VK_SPACE || e.getKeyCode() == KeyEvent.VK_DOWN) gravity = gravityLevels[board.getLevel()];
     }
     
     @Override
@@ -433,24 +433,14 @@ public class Game extends JPanel implements KeyListener{
         return highScore;
     }
     
-    public static void playMusic(String path) { //TODO: Musica so no board
+    public static void playMusic(String path) {
         musicPlayer.playMusic(path);
     }
 
     public static void stopMusic() {
         musicPlayer.stopMusic();
     }
-
-    /*
-    public static void pauseMusic() {
-        musicPlayer.pause();
-    }
-
-    public static void resumeMusic() {
-        musicPlayer.resume();
-    }
-    */
-
+    
     public static void playSound(String path) {
         soundPlayer.playSound(path);
     }
@@ -495,20 +485,18 @@ public class Game extends JPanel implements KeyListener{
 
     public void rotatePieceRight() {
         if (!isPaused()) {
-            board.tryMove(0, 0, 1);
-            repaint();
-            if(!getSoundIsRunning()) {
-                playSound("src\\RotatePieceSound.wav");
+            if(board.tryMove(0, 0, 1)) {
+                repaint();
+                if (!getSoundIsRunning()) playSound("src\\RotatePieceSound.wav");
             }
         }
     }
 
     public void rotatePieceLeft() {
         if (!isPaused()) {
-            board.tryMove(0, 0, 3);
-            repaint();
-            if(!getSoundIsRunning()) {
-                playSound("src\\RotatePieceSound.wav");
+            if(board.tryMove(0, 0, 3)) {
+                repaint();
+                if (!getSoundIsRunning()) playSound("src\\RotatePieceSound.wav");
             }
         }
     }
@@ -522,20 +510,18 @@ public class Game extends JPanel implements KeyListener{
 
     public void movePieceLeft() {
         if (!isPaused()) {
-            board.tryMove(-1, 0, 0);
-            repaint();
-            if(!getSoundIsRunning()) {
-                playSound("src\\MovingPieceSound.wav");
+            if (board.tryMove(-1, 0, 0)) {
+                repaint();
+                if (!getSoundIsRunning()) playSound("src\\MovingPieceSound.wav");
             }
         }
     }
 
     public void movePieceRight() {
-        if (!paused && !forcePaused) {
-            board.tryMove(1, 0, 0);
-            repaint();
-            if(!getSoundIsRunning()) {
-                playSound("src\\MovingPieceSound.wav");
+        if (!isPaused()) {
+            if (board.tryMove(1, 0, 0)) {
+                repaint();
+                if (!getSoundIsRunning()) playSound("src\\MovingPieceSound.wav");
             }
         }
     }
