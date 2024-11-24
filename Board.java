@@ -1,8 +1,8 @@
 import java.util.LinkedHashSet;
 
 public class Board{
-    protected static final int BOARD_HEIGHT = 20;
-    protected static final int BOARD_WIDTH = 10;
+    private final int boardWidth;
+    private final int boardHeight;
     
     private final Square[][] board;
     private Piece currentPiece;
@@ -16,10 +16,12 @@ public class Board{
     private int TotalScore = 0;
 
 
-    public Board() {
-        this.board = new Square[BOARD_WIDTH][BOARD_HEIGHT];
-        for (int i = 0; i < BOARD_WIDTH; i++) {
-            for (int j = 0; j < BOARD_HEIGHT; j++) {
+    public Board(int level, int boardWidth, int boardHeight) {
+        this.boardWidth = boardWidth;
+        this.boardHeight = boardHeight;
+        this.board = new Square[boardWidth][boardHeight];
+        for (int i = 0; i < boardWidth; i++) {
+            for (int j = 0; j < boardHeight; j++) {
                 this.board[i][j] = new Square();
             }
         }
@@ -38,7 +40,7 @@ public class Board{
         for (int i = 0; i < 4; i++) {
             int x1 = currentPiece.getShape(rotation)[i][0];
             int y1 = currentPiece.getShape(rotation)[i][1];
-            if (x + x1 < 0 || x + x1 >= BOARD_WIDTH || y + y1 < 0 || y + y1 >= BOARD_HEIGHT) {
+            if (x + x1 < 0 || x + x1 >= boardWidth || y + y1 < 0 || y + y1 >= boardHeight) {
                 return null;
             }
             squares[i] = this.board[x + x1][y + y1];
@@ -74,15 +76,7 @@ public class Board{
         return false;
     }
 
-    public void newPiece() {
-        new Thread(() -> {
-            try {
-                Thread.sleep(10*Game.FRAME_LENGTH);
-            } catch (InterruptedException e) {
-                System.err.println("InterruptedException: " + e.getMessage());
-            }
-            Game.repaintUI();
-        }).start();
+    public void newPiece() { //TODO: ARE
         if(gameOver == true){
             return;
         }
@@ -90,8 +84,8 @@ public class Board{
         do {
             nextPiece = new Piece(Piece.PieceType.values()[(int)(Math.random()*7)]);
         } while(nextPiece.getType() == currentPiece.getType());
-        if (currentPiece.getType() == Piece.PieceType.I) currentPieceCoords = new int[]{BOARD_WIDTH/2-2, -2};
-        else currentPieceCoords = new int[]{BOARD_WIDTH/2-2, -1};
+        if (currentPiece.getType() == Piece.PieceType.I) currentPieceCoords = new int[]{boardWidth/2-2, -2};
+        else currentPieceCoords = new int[]{boardWidth/2-2, -1};
         currentPieceRotation = 0;
 
         if(checkCollision(currentPieceCoords[0], currentPieceCoords[1], currentPieceRotation)){  // v se tem colição, se tiver, vai ser true e vai printar game over
@@ -113,9 +107,9 @@ public class Board{
     public void clearLines() {
         LinkedHashSet<Integer> lines = new LinkedHashSet<>();
         int LinesCleared = 0;
-        for (int j = 0; j < BOARD_HEIGHT; j++) {
+        for (int j = 0; j < boardHeight; j++) {
             boolean full = true;
-            for (int i = 0; i < BOARD_WIDTH; i++) {
+            for (int i = 0; i < boardWidth; i++) {
                 if (!this.board[i][j].isOccupied()) {
                     full = false;
                     break;
@@ -151,10 +145,9 @@ public class Board{
             Game.playSound("src\\FallingPieceSound.wav");
         }
         if (!lines.isEmpty()) {
-            
-            for (int q = 0; q < BOARD_WIDTH; q++) {
+            for (int q = 0; q < boardWidth; q++) {
                 for (int j : lines) {
-                    int i = BOARD_WIDTH/2 + ( q % 2 == 0 ? q/2 : -(q/2+1));
+                    int i = boardWidth/2 + ( q % 2 == 0 ? q/2 : -(q/2+1));
                     this.board[i][j].setOccupied(false);
                     this.board[i][j].setColorType(0);
                 }
@@ -167,7 +160,7 @@ public class Board{
             }
             for (int j : lines) {
                 for (int k = j; k > 0; k--) {
-                    for (int i = 0; i < BOARD_WIDTH; i++) {
+                    for (int i = 0; i < boardWidth; i++) {
                         this.board[i][k].setOccupied(this.board[i][k-1].isOccupied());
                         this.board[i][k].setColorType(this.board[i][k-1].getColorType());
                     }
@@ -206,5 +199,15 @@ public class Board{
     public Piece getNextPiece()
     {
         return this.nextPiece;
+    }
+
+    public int getBoardHeight()
+    {
+        return this.boardHeight;
+    }
+
+    public int getBoardWidth()
+    {
+        return this.boardWidth;
     }
 }

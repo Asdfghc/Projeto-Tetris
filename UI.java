@@ -25,7 +25,10 @@ public class UI extends JPanel {
         PlayButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                gameScreen();
+                game = new Game(highScore, 0, 10, 20);
+                container.add(game, "Game");
+                cardlayout.show(container, "Game");
+                game.requestFocus();
             }
         });
         menu.add(PlayButton);
@@ -36,13 +39,6 @@ public class UI extends JPanel {
         highScore = game.getHighScore();
         cardlayout.show(container, "Menu");
         container.remove(game);
-    }
-
-    public void gameScreen() {
-        game = new Game(highScore);
-        container.add(game, "Game");
-        cardlayout.show(container, "Game");
-        game.requestFocus();
     }
 }
 

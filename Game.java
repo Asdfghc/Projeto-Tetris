@@ -21,6 +21,9 @@ public class Game extends JPanel implements KeyListener{
     private static int das = 0;
     private static int time = 0;
     private Board board;
+    private int boardWidth = 10;
+    private int boardHeight = 20;
+    private int startLevel = 0;
     private static boolean paused = false;
     private static boolean forcePaused = false;
     private static final AudioPlayer musicPlayer = new AudioPlayer();
@@ -28,8 +31,11 @@ public class Game extends JPanel implements KeyListener{
     private final Thread thread;
     private int highScore;
 
-    public Game(int highScore) {
+    public Game(int highScore, int startLevel, int boardWidth, int boardHeight) {
         this.highScore = highScore;
+        this.boardWidth = boardWidth;
+        this.boardHeight = boardHeight;
+        this.startLevel = startLevel;
         restart();
         
         addKeyListener(this);
@@ -102,42 +108,78 @@ public class Game extends JPanel implements KeyListener{
         
         int windowHeight = (int) (getSize().getHeight());
         int windowWidth = (int) (getSize().getWidth());
-        int squareSize = windowHeight*3/(4*Board.BOARD_HEIGHT);
-        int imageHeight = Math.floorDiv((squareSize)*4*Board.BOARD_HEIGHT, 3) + squareSize;
+        int squareSize = windowHeight*3/(4*board.getBoardHeight());
+        int imageHeight = Math.floorDiv((squareSize)*4*board.getBoardHeight(), 3) + squareSize;
         int imageWidth = imageHeight*8/7;
         int imageOriginX = windowWidth/2 - imageWidth/2;
         //int imageOriginY = windowHeight/2 - imageHeight/2;
-        try {
-            BufferedImage background = ImageIO.read(new File("src\\TetrisBackground.png"));
-            Image scaledBackground = background.getScaledInstance(imageWidth, imageHeight, BufferedImage.SCALE_DEFAULT);
-            g.drawImage(scaledBackground, imageOriginX, 0, this);
-        } catch (IOException e) {
-            e.printStackTrace();
+
+        if (boardWidth != 10 || boardHeight != 20) {
+            //TODO: Fundo
+        } else {
+            try {
+                BufferedImage background = ImageIO.read(new File("src\\TetrisBackground.png"));
+                Image scaledBackground = background.getScaledInstance(imageWidth, imageHeight, BufferedImage.SCALE_DEFAULT);
+                g.drawImage(scaledBackground, imageOriginX, 0, this);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
 
         int boardOriginX = (int) (imageOriginX + imageWidth*0.372f);
         int boardOriginY = (int) (imageHeight*0.175f);
         g.setColor(Color.WHITE);
         g.drawRect(boardOriginX, boardOriginY, 1, 1);
-        //int boardWidth = squareSize*Board.BOARD_WIDTH;
-        //int boardHeight = squareSize*Board.BOARD_HEIGHT;
+        
+        if (boardWidth != 10 || boardHeight != 20) {
             
-        // All Panel Color
-        //g.setColor(Color.BLACK);
-        //g.fillRect(0, 0, windowWidth, windowHeight);
-        
-        //Board UI
-        //int boardBorderSize = (int) (0.25*squareSize);
-        // Board Border Color
-        //g.setColor(Color.CYAN);
-        //g.fillRect(boardOriginX - boardBorderSize, boardOriginY - boardBorderSize, boardWidth + 2*boardBorderSize, boardHeight + 2*boardBorderSize);
-        
-        // Board color
-        //g.setColor(Color.BLACK);
-        //g.fillRect(boardOriginX, boardOriginY, boardWidth, boardHeight);
-        
+            int boardWidthPixels = squareSize*board.getBoardWidth();
+            int boardHeightPixels = squareSize*board.getBoardHeight();
+                
+            // All Panel Color
+            g.setColor(Color.BLACK);
+            g.fillRect(0, 0, windowWidth, windowHeight);
+            
+            //Board UI
+            int boardBorderSize = (int) (0.25*squareSize);
+            //Board Border Color
+            g.setColor(Color.CYAN);
+            g.fillRect(boardOriginX - boardBorderSize, boardOriginY - boardBorderSize, boardWidthPixels + 2*boardBorderSize, boardHeightPixels + 2*boardBorderSize);
+            
+            // Board color
+            g.setColor(Color.BLACK);
+            g.fillRect(boardOriginX, boardOriginY, boardWidthPixels, boardHeightPixels);
+        }
+
     // Lines Box UI
-        int linesTextOriginX = boardOriginX + Board.BOARD_WIDTH*squareSize/2 + (int) (2.1*squareSize);
+        if (boardWidth != 10 || boardHeight != 20) {
+            int linesBoxBorderSize = (int) (0.15*squareSize);
+            int linesBoxWidth = (int) 11*squareSize;
+            int linesBoxHeight = (int) 2*squareSize;
+            int linesBoxOriginX = boardOriginX + Math.min(board.getBoardWidth()*squareSize/2 - linesBoxWidth/2, board.getBoardWidth()*squareSize - (int) (10*squareSize));
+            int linesBoxOriginY = boardOriginY - (int) (3.4*squareSize);
+
+            g.setColor(Color.CYAN);
+            g.fillRect(linesBoxOriginX - linesBoxBorderSize, linesBoxOriginY - linesBoxBorderSize, linesBoxWidth + 2*linesBoxBorderSize, linesBoxHeight + 2*linesBoxBorderSize);
+            
+            g.setColor(Color.black);
+            g.fillRect(linesBoxOriginX, linesBoxOriginY, linesBoxWidth, linesBoxHeight);
+
+            int linesLabelOriginX = boardOriginX + 1*squareSize + Math.min(board.getBoardWidth()*squareSize/2 - linesBoxWidth/2, board.getBoardWidth()*squareSize - (int) (10*squareSize));
+            int linesLabelOriginY = boardOriginY - (int) (2*squareSize);
+
+            g.setColor(Color.WHITE);
+            try {
+                Font customFont = Font.createFont(Font.TRUETYPE_FONT, new File("src\\NESCyrillic.ttf")).deriveFont(squareSize*2f);
+                g.setFont(customFont);
+            } catch (FontFormatException | IOException e) {
+                e.printStackTrace();
+            }
+            g.drawString("LINES - ", linesLabelOriginX, linesLabelOriginY);
+            
+        }
+        
+        int linesTextOriginX = boardOriginX + board.getBoardWidth()*squareSize/2 + Math.min((int) (2.1*squareSize), board.getBoardWidth()*squareSize/2 - (int) (2.1*squareSize));
         int linesTextOriginY = boardOriginY - (int) (2*squareSize);
 
         g.setColor(Color.WHITE);
@@ -149,21 +191,48 @@ public class Game extends JPanel implements KeyListener{
         }
         g.drawString(new DecimalFormat("000").format(board.getLines()), linesTextOriginX, linesTextOriginY);
 
-    // Score Box UI //TODO: Melhorar tamanhos e posições
-        //int scoreBoxBorderSize = (int) (0.15*squareSize);
-        //int scoreBoxOriginX = boardOriginX + Board.BOARD_WIDTH*squareSize + 2*squareSize;
-        //int scoreBoxOriginY = windowHeight/17 - (int) (0.25*squareSize);
-        //int scoreBoxWidth = (int) 6*squareSize;
-        //int scoreBoxHeight = (int) 3*squareSize;
+    // Score Box UI
+        if (boardWidth != 10 || boardHeight != 20) {
+            
+            int scoreBoxBorderSize = (int) (0.15*squareSize);
+            int scoreBoxOriginX = boardOriginX + board.getBoardWidth()*squareSize + (int) (1.5*squareSize);
+            int scoreBoxOriginY = boardOriginY - (int) (3*squareSize);
+            int scoreBoxWidth = (int) 7*squareSize;
+            int scoreBoxHeight = (int) 7*squareSize;
 
-        //g.setColor(Color.CYAN);
-        //g.fillRect(scoreBoxOriginX - scoreBoxBorderSize, scoreBoxOriginY - scoreBoxBorderSize, scoreBoxWidth + 2*boardBorderSize, scoreBoxHeight + 2*boardBorderSize);
-        
-        //g.setColor(Color.black);
-        //g.fillRect(scoreBoxOriginX, scoreBoxOriginY, scoreBoxWidth, scoreBoxHeight);
+            g.setColor(Color.CYAN);
+            g.fillRect(scoreBoxOriginX - scoreBoxBorderSize, scoreBoxOriginY - scoreBoxBorderSize, scoreBoxWidth + 2*scoreBoxBorderSize, scoreBoxHeight + 2*scoreBoxBorderSize);
+            
+            g.setColor(Color.black);
+            g.fillRect(scoreBoxOriginX, scoreBoxOriginY, scoreBoxWidth, scoreBoxHeight);
+
+            int highScoreLabelOriginX = boardOriginX + board.getBoardWidth()*squareSize + (int) (1.9*squareSize);
+            int highScoreLabelOriginY = boardOriginY - (int) (1*squareSize);
+
+            g.setColor(Color.WHITE);
+            try {
+                Font customFont = Font.createFont(Font.TRUETYPE_FONT, new File("src\\NESCyrillic.ttf")).deriveFont(squareSize*2f);
+                g.setFont(customFont);
+            } catch (FontFormatException | IOException e) {
+                e.printStackTrace();
+            }
+            g.drawString("TOP", highScoreLabelOriginX, highScoreLabelOriginY);
+
+            int scoreLabelOriginX = boardOriginX + board.getBoardWidth()*squareSize + (int) (1.9*squareSize);
+            int scoreLabelOriginY = boardOriginY + (int) (2*squareSize);
+
+            g.setColor(Color.WHITE);
+            try {
+                Font customFont = Font.createFont(Font.TRUETYPE_FONT, new File("src\\NESCyrillic.ttf")).deriveFont(squareSize*2f);
+                g.setFont(customFont);
+            } catch (FontFormatException | IOException e) {
+                e.printStackTrace();
+            }
+            g.drawString("SCORE", scoreLabelOriginX, scoreLabelOriginY);
+        }
 
         // Text
-        int highScoreTextOriginX = boardOriginX + Board.BOARD_WIDTH*squareSize + (int) (1.9*squareSize);
+        int highScoreTextOriginX = boardOriginX + board.getBoardWidth()*squareSize + (int) (1.9*squareSize);
         int highScoreTextOriginY = boardOriginY + (int) (0.1*squareSize);
 
         g.setColor(Color.WHITE);
@@ -179,7 +248,7 @@ public class Game extends JPanel implements KeyListener{
         g.drawString(new DecimalFormat("000000").format(highScore), highScoreTextOriginX, highScoreTextOriginY);
 
 
-        int scoreTextOriginX = boardOriginX + Board.BOARD_WIDTH*squareSize + (int) (1.9*squareSize);
+        int scoreTextOriginX = boardOriginX + board.getBoardWidth()*squareSize + (int) (1.9*squareSize);
         int scoreTextOriginY = boardOriginY + (int) (3.1*squareSize);
 
         g.setColor(Color.WHITE);
@@ -195,36 +264,62 @@ public class Game extends JPanel implements KeyListener{
     int outline = 2;
     int highlightSize = 8;
         //Border UI
-        //int nextPieceBoxBorderSize = (int) (0.25*squareSize);
-        //int nextPieceBoxWidth = (int) 4*squareSize;
-        //int nextPieceBoxHeight = (int) 6*squareSize;
-        //int nextPieceOriginX = boardOriginX + Board.BOARD_WIDTH*squareSize + 2*squareSize;
-        //int nextPieceOriginY = windowHeight/2 - nextPieceBoxHeight/2 - nextPieceBoxBorderSize;
+        if (boardWidth != 10 || boardHeight != 20) {
+            int nextPieceBoxBorderSize = (int) (0.25*squareSize);
+            int nextPieceBoxWidth = (int) (4.2*squareSize);
+            int nextPieceBoxHeight = (int) (6*squareSize);
+            int nextPieceOriginX = boardOriginX + board.getBoardWidth()*squareSize + (int) (1.9*squareSize);
+            int nextPieceOriginY = windowHeight/2 - nextPieceBoxHeight/2 - nextPieceBoxBorderSize;
 
-        //g.setColor(Color.CYAN);
-        //g.fillRect(nextPieceOriginX - nextPieceBoxBorderSize, nextPieceOriginY - nextPieceBoxBorderSize, nextPieceBoxWidth + 2*nextPieceBoxBorderSize, nextPieceBoxHeight + 2*nextPieceBoxBorderSize);
-        
-        //g.setColor(Color.black);
-        //g.fillRect(nextPieceOriginX, nextPieceOriginY, nextPieceBoxWidth, nextPieceBoxHeight);
+            g.setColor(Color.CYAN);
+            g.fillRect(nextPieceOriginX - nextPieceBoxBorderSize, nextPieceOriginY - nextPieceBoxBorderSize, nextPieceBoxWidth + 2*nextPieceBoxBorderSize, nextPieceBoxHeight + 2*nextPieceBoxBorderSize);
+            
+            g.setColor(Color.black);
+            g.fillRect(nextPieceOriginX, nextPieceOriginY, nextPieceBoxWidth, nextPieceBoxHeight);
+
+            int nextPieceLabelOriginX = boardOriginX + board.getBoardWidth()*squareSize + (int) (2.1*squareSize);
+            int nextPieceLabelOriginY = boardOriginY + (int) (7*squareSize);
+
+            g.setColor(Color.WHITE);
+            try {
+                Font customFont = Font.createFont(Font.TRUETYPE_FONT, new File("src\\NESCyrillic.ttf")).deriveFont((float) squareSize*2);
+                g.setFont(customFont);
+            } catch (FontFormatException | IOException e) {
+                e.printStackTrace();
+            }
+            g.drawString("NEXT", nextPieceLabelOriginX, nextPieceLabelOriginY);
             
     // Level UI
         //Level Box UI
-        //int levelBoxBorderSize = (int) (0.15*squareSize);
-        //int levelBoxOriginX = boardOriginX - levelBoxBorderSize + Board.BOARD_WIDTH*squareSize + 2*squareSize;
-        //int levelBoxOriginY = nextPieceOriginY + nextPieceBoxHeight + 2*squareSize;
-        //int levelBoxWidth = (int) 6*squareSize;
-        //int levelBoxHeight = (int) 4*squareSize;
+            int levelBoxBorderSize = (int) (0.15*squareSize);
+            int levelBoxOriginX = boardOriginX - levelBoxBorderSize + board.getBoardWidth()*squareSize + (int) (1.8*squareSize);
+            int levelBoxOriginY = nextPieceOriginY + nextPieceBoxHeight + 2*squareSize;
+            int levelBoxWidth = (int) 6*squareSize;
+            int levelBoxHeight = (int) 3*squareSize;
 
-        //g.setColor(Color.CYAN);
-        //g.fillRect(levelBoxOriginX - levelBoxBorderSize, levelBoxOriginY - levelBoxBorderSize, levelBoxWidth + 2*levelBoxBorderSize, levelBoxHeight + 2*levelBoxBorderSize);
-        
-        //g.setColor(Color.black);
-        //g.fillRect(levelBoxOriginX, levelBoxOriginY, levelBoxWidth, levelBoxHeight);
+            g.setColor(Color.CYAN);
+            g.fillRect(levelBoxOriginX - levelBoxBorderSize, levelBoxOriginY - levelBoxBorderSize, levelBoxWidth + 2*levelBoxBorderSize, levelBoxHeight + 2*levelBoxBorderSize);
+            
+            g.setColor(Color.black);
+            g.fillRect(levelBoxOriginX, levelBoxOriginY, levelBoxWidth, levelBoxHeight);
+
+            int levelLabelOriginX = boardOriginX + board.getBoardWidth()*squareSize + (int) (1.9*squareSize);
+            int levelLabelOriginY = boardOriginY + board.getBoardHeight()*squareSize - (int) (5.1*squareSize);
+
+            g.setColor(Color.WHITE);
+            try {
+                Font customFont = Font.createFont(Font.TRUETYPE_FONT, new File("src\\NESCyrillic.ttf")).deriveFont((float) squareSize*2);
+                g.setFont(customFont);
+            } catch (FontFormatException | IOException e) {
+                e.printStackTrace();
+            }
+            g.drawString("LEVEL", levelLabelOriginX, levelLabelOriginY);
+        }
         
         // Text
         
-        int levelBoxTextOriginX = boardOriginX + Board.BOARD_WIDTH*squareSize + (int) (1.9*squareSize);
-        int levelBoxTextOriginY = boardOriginY + Board.BOARD_HEIGHT*squareSize - (int) (5.1*squareSize);
+        int levelBoxTextOriginX = boardOriginX + board.getBoardWidth()*squareSize + (int) (1.9*squareSize);
+        int levelBoxTextOriginY = boardOriginY + board.getBoardHeight()*squareSize - (int) (5.1*squareSize);
         g.setColor(Color.WHITE);
         try {
             Font customFont = Font.createFont(Font.TRUETYPE_FONT, new File("src\\NESCyrillic.ttf")).deriveFont((float) squareSize*2);
@@ -239,8 +334,8 @@ public class Game extends JPanel implements KeyListener{
         Piece nextPiece = board.getNextPiece();
         Square nextPieceSquare = new Square();
         nextPieceSquare.setColorType(nextPiece.getColorType());
-        int nextPieceCenterx = boardOriginX + Board.BOARD_WIDTH*squareSize + (int) (2.9*squareSize);
-        int nextPieceOriginX = nextPieceCenterx;
+        int nextPieceCenterX = boardOriginX + board.getBoardWidth()*squareSize + (int) (2.9*squareSize);
+        int nextPieceOriginX = nextPieceCenterX;
         switch (nextPiece.getType()) {
             case I -> nextPieceOriginX -= squareSize;
             case O -> nextPieceOriginX -= squareSize;
@@ -250,7 +345,7 @@ public class Game extends JPanel implements KeyListener{
             case S -> nextPieceOriginX -= squareSize*1/2;
             case Z -> nextPieceOriginX -= squareSize*1/2;
         }
-        int nextPieceOriginY = boardOriginY + Board.BOARD_HEIGHT*squareSize - (int) (12*squareSize);
+        int nextPieceOriginY = boardOriginY + board.getBoardHeight()*squareSize - (int) (12*squareSize);
         for(int[] square : board.getNextPiece().getShape(0)){
             g.setColor(nextPieceSquare.getMainColor(board.getLevel()));
             g.fillRect(nextPieceOriginX + (square[0] * squareSize) + outline, nextPieceOriginY + (square[1] * squareSize) + outline, squareSize -2*outline, squareSize -2*outline);
@@ -265,8 +360,8 @@ public class Game extends JPanel implements KeyListener{
         }
         
         // Board UI
-        for (int i = 0; i < Board.BOARD_WIDTH; i++) {
-            for (int j = 0; j < Board.BOARD_HEIGHT; j++) {
+        for (int i = 0; i < board.getBoardWidth(); i++) {
+            for (int j = 0; j < board.getBoardHeight(); j++) {
                 g.setColor(board.getSquare(i, j).getMainColor(board.getLevel()));
                 g.fillRect(boardOriginX + outline + i*squareSize, boardOriginY + outline + squareSize*j, squareSize - 2*outline, squareSize - 2*outline);
                 g.setColor(board.getSquare(i, j).getHighlightColor(board.getLevel()));
@@ -312,7 +407,7 @@ public class Game extends JPanel implements KeyListener{
     }
 
     public void restart() {
-        board = new Board();
+        board = new Board(startLevel, boardWidth, boardHeight);
         forceUnpause();
         if(paused) pause();
         board.newPiece();
