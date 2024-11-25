@@ -16,7 +16,6 @@ import javax.swing.JPanel;
 public class Game extends JPanel implements KeyListener{
 
     public static final int FRAME_LENGTH = 17;
-    
 
     private static final int[] gravityLevels = {48, 43, 38, 33, 28, 23, 18, 13, 8, 6, 5, 5, 5, 4, 4, 4, 3, 3, 3, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1};
     private static int gravity = gravityLevels[0];
@@ -59,7 +58,7 @@ public class Game extends JPanel implements KeyListener{
                                 movePieceLeft();
                                 if (das == 16) das = 10;
                             }
-                            if (pressedKeys.contains(KeyEvent.VK_D ) || pressedKeys.contains(KeyEvent.VK_RIGHT)) {
+                            if (pressedKeys.contains(KeyEvent.VK_D) || pressedKeys.contains(KeyEvent.VK_RIGHT)) {
                                 movePieceRight();
                                 if (das == 16) das = 10;
                             }
@@ -85,9 +84,8 @@ public class Game extends JPanel implements KeyListener{
             pressedKeys.add(e.getKeyCode());
             if (e.getKeyCode() == KeyEvent.VK_A || e.getKeyCode() == KeyEvent.VK_D || 
                 e.getKeyCode() == KeyEvent.VK_LEFT || e.getKeyCode() == KeyEvent.VK_RIGHT) das = 0;
-            if (e.getKeyCode() == KeyEvent.VK_SPACE || e.getKeyCode() == KeyEvent.VK_DOWN) gravity = 2;
-            if (e.getKeyCode() == KeyEvent.VK_J || e.getKeyCode() == KeyEvent.VK_K || e.getKeyCode() == KeyEvent.VK_Z || 
-                e.getKeyCode() == KeyEvent.VK_S) this.rotatePieceLeft();
+            if (e.getKeyCode() == KeyEvent.VK_SPACE || e.getKeyCode() == KeyEvent.VK_DOWN || e.getKeyCode() == KeyEvent.VK_S) gravity = 2;
+            if (e.getKeyCode() == KeyEvent.VK_J || e.getKeyCode() == KeyEvent.VK_K || e.getKeyCode() == KeyEvent.VK_Z) this.rotatePieceLeft();
             if (e.getKeyCode() == KeyEvent.VK_L || e.getKeyCode() == KeyEvent.VK_C || e.getKeyCode() == KeyEvent.VK_X || 
                 e.getKeyCode() == KeyEvent.VK_UP || e.getKeyCode() == KeyEvent.VK_W) this.rotatePieceRight();
         }
@@ -96,7 +94,7 @@ public class Game extends JPanel implements KeyListener{
     @Override
     public synchronized void keyReleased(KeyEvent e) {
         pressedKeys.remove(e.getKeyCode());
-        if (e.getKeyCode() == KeyEvent.VK_SPACE || e.getKeyCode() == KeyEvent.VK_DOWN) gravity = gravityLevels[board.getLevel()];
+        if (e.getKeyCode() == KeyEvent.VK_SPACE || e.getKeyCode() == KeyEvent.VK_DOWN || e.getKeyCode() == KeyEvent.VK_S) gravity = gravityLevels[board.getLevel()];
     }
     
     @Override
@@ -440,7 +438,7 @@ public class Game extends JPanel implements KeyListener{
     public static void stopMusic() {
         musicPlayer.stopMusic();
     }
-    
+
     public static void playSound(String path) {
         soundPlayer.playSound(path);
     }
