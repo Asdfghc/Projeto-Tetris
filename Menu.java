@@ -5,7 +5,6 @@ import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-
 import javax.imageio.ImageIO;
 import javax.swing.JButton;
 import javax.swing.JPanel;
@@ -17,10 +16,10 @@ public class Menu extends JPanel {
     public Menu() {
         setLayout(null);
         PlayButton = new JButton("New Game");
-        //int windowHeight = (int) (getSize().getHeight()/2);
-        //int windowWidth = (int) (getSize().getWidth()/2);
+        int windowHeight = (int) (getSize().getHeight()/2);
+        int windowWidth = (int) (getSize().getWidth()/2);
     
-        PlayButton.setBounds(300,300,100,50);
+        PlayButton.setBounds(windowWidth+500, windowHeight+500,100,50);
     
         PlayButton.addActionListener(new ActionListener() {
             @Override

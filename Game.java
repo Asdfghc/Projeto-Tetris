@@ -116,9 +116,12 @@ public class Game extends JPanel implements KeyListener{
         int windowWidth = (int) (getSize().getWidth());
         int squareSize = windowHeight*3/(4*board.getBoardHeight());
         int imageHeight = Math.floorDiv((squareSize)*4*board.getBoardHeight(), 3) + squareSize;
-        int imageWidth = imageHeight*8/7;
+        int imageWidth = imageHeight*2;
         int imageOriginX = windowWidth/2 - imageWidth/2;
         //int imageOriginY = windowHeight/2 - imageHeight/2;
+
+        g.setColor(Color.BLACK);
+        g.fillRect(0, 0, (int) getSize().getWidth(), (int) getSize().getWidth());
 
         if (boardWidth != 10 || boardHeight != 20) {
             //TODO: Fundo
@@ -425,7 +428,7 @@ public class Game extends JPanel implements KeyListener{
                 }
                 g.drawString(new DecimalFormat("000").format(board.getStats(piece.getType())), statsLabelOriginX, statsLabelOriginY + (int) (i*2.5*smallSquareSize));
             }
-
+            
         }
     }
 
@@ -459,7 +462,7 @@ public class Game extends JPanel implements KeyListener{
     public void endGame() {
         stopMusic();
         thread.interrupt();
-        Tetris.game.menuScreen();
+        Tetris.game.menuScreen(this);
     }
 
     public static boolean isPaused() {
