@@ -19,6 +19,7 @@ public class UI extends JPanel {
 
     public void menuScreen(Game game) {
         highScore = game.getHighScore();
+        
         cardlayout.show(container, "Menu");
         container.remove(game);
     }

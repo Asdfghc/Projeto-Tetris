@@ -461,6 +461,7 @@ public class Game extends JPanel implements KeyListener{
 
     public void endGame() {
         stopMusic();
+        musicPlayer.playMusic("src\\TetrisMenuMusic.wav");
         thread.interrupt();
         Tetris.game.menuScreen(this);
     }
