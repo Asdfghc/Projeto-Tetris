@@ -5,18 +5,16 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.HashSet;
-
 import javax.imageio.ImageIO;
 import javax.swing.JButton;
 import javax.swing.JPanel;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 
 public class Menu extends JPanel implements KeyListener {
     private static final AudioPlayer musicPlayer = new AudioPlayer();
@@ -26,7 +24,6 @@ public class Menu extends JPanel implements KeyListener {
     private Game game;
 
     public Menu() {
-
         addKeyListener(this);
         setFocusable(true);
         setFocusTraversalKeysEnabled(false);

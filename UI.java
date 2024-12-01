@@ -16,6 +16,7 @@ public class UI extends JPanel {
         setLayout(cardlayout);
         add(container);
         container.add(menu, "Menu");
+        cardlayout.show(container, "Menu");
         menu.requestFocus();
     }
 

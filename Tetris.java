@@ -20,13 +20,12 @@ public class Tetris extends JPanel{
     }
     
     public static void fullScreen() {
+        frame.dispose();
         if (fullScreen) {
-            frame.dispose();
             frame.setLocation(80,40);
             frame.setSize(1720, 1000);
             frame.setUndecorated(false);
         } else {
-            frame.dispose();
             frame.setExtendedState(JFrame.MAXIMIZED_BOTH); 
             frame.setUndecorated(true);
         }
