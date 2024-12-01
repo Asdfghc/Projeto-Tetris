@@ -126,7 +126,13 @@ public class Game extends JPanel implements KeyListener{
         g.fillRect(0, 0, (int) getSize().getWidth(), (int) getSize().getWidth());
 
         if (boardWidth != 10 || boardHeight != 20) {
-            //TODO: Fundo
+            try {
+                BufferedImage background = ImageIO.read(new File("src\\TetrisBackgroundMod.png"));
+                Image scaledBackground = background.getScaledInstance(imageWidth, imageHeight, BufferedImage.SCALE_SMOOTH);
+                g.drawImage(scaledBackground, imageOriginX, 0, this);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         } else {
             try {
                 BufferedImage background = ImageIO.read(new File("src\\TetrisBackground.png"));
@@ -146,11 +152,7 @@ public class Game extends JPanel implements KeyListener{
             
             int boardWidthPixels = squareSize*board.getBoardWidth();
             int boardHeightPixels = squareSize*board.getBoardHeight();
-                
-            // All Panel Color
-            g.setColor(Color.BLACK);
-            g.fillRect(0, 0, windowWidth, windowHeight);
-            
+
             //Board UI
             int boardBorderSize = (int) (0.25*squareSize);
             //Board Border Color
@@ -432,6 +434,7 @@ public class Game extends JPanel implements KeyListener{
             }
             
         }
+
     }
 
     public int getHighScore() {

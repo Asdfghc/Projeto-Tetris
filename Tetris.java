@@ -11,7 +11,7 @@ public class Tetris extends JPanel{
             JFrame f = new JFrame("Tetris");
             EventQueue.invokeLater(() -> {
                 f.setLocation(80,40);
-                f.setSize(1720, 1000);
+                f.setSize(1300, 800);
                 f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 f.setVisible(true);
                 f.add(game);
@@ -22,8 +22,8 @@ public class Tetris extends JPanel{
     public static void fullScreen() {
         frame.dispose();
         if (fullScreen) {
+            frame.setSize(1300, 800);
             frame.setLocation(80,40);
-            frame.setSize(1720, 1000);
             frame.setUndecorated(false);
         } else {
             frame.setExtendedState(JFrame.MAXIMIZED_BOTH); 
