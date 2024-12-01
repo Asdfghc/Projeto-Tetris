@@ -90,6 +90,10 @@ public class Game extends JPanel implements KeyListener{
                 e.getKeyCode() == KeyEvent.VK_S) this.rotatePieceLeft();
             if (e.getKeyCode() == KeyEvent.VK_L || e.getKeyCode() == KeyEvent.VK_C || e.getKeyCode() == KeyEvent.VK_X || 
                 e.getKeyCode() == KeyEvent.VK_UP || e.getKeyCode() == KeyEvent.VK_W) this.rotatePieceRight();
+            if (e.getKeyCode() == KeyEvent.VK_Q) this.endGame();
+            if (e.getKeyCode() == KeyEvent.VK_R) this.restart();
+            if (e.getKeyCode() == KeyEvent.VK_E) this.pause();
+            if (e.getKeyCode() == KeyEvent.VK_F11) Tetris.fullScreen();
         }
     }
 
@@ -102,9 +106,7 @@ public class Game extends JPanel implements KeyListener{
     @Override
     public synchronized void keyTyped(KeyEvent e) {
         switch (Character.toLowerCase(e.getKeyChar())) {
-            case 'q' -> this.endGame();
-            case 'r' -> this.restart();
-            case 'e' -> this.pause();
+
         }
     }
     
@@ -532,5 +534,13 @@ public class Game extends JPanel implements KeyListener{
 
     public static void repaintUI() {
         Tetris.game.repaint();
+    }
+
+    public int getBoardWidth() {
+        return board.getBoardWidth();
+    }
+
+    public int getBoardHeight() {
+        return board.getBoardHeight();
     }
 }
